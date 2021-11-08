@@ -1,0 +1,15 @@
+Inheritance is the mechanism that allows one class to acquire all the properties from another class by inheriting the class. We call the inheriting class a child class and the inherited class as the superclass or parent class.
+
+It provides code reusability . 
+
+In Java, we do this by extending the parent class. Thus, the child class gets all the properties from the parent:
+
+public class Bike extends Vehicle { 
+    //...
+}
+When we extend a class, we form an IS-A relationship. The Bike IS-A Vehicle. So, it has all the characteristics of a Vehicle.
+
+
+We may ask the question, why do we need inheritance? To answer this, let's consider a vehicle manufacturer who manufactures different types of vehicles, such as cars, buses, trams, and trucks.
+
+To make the work easy, we can bundle the common features and properties of all vehicle types into a class. And we can let individual types inherit and reuse those properties:
