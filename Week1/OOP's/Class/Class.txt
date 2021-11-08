@@ -9,6 +9,7 @@ A class can also be defined as a blueprint from which you can create an individu
  
  Types of classes
 > Normal classes
+> Abstract class
 > Anonymous classes
 > Nested classes
 
