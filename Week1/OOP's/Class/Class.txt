@@ -1,0 +1,28 @@
+Class :
+
+Collection of objects is called class. It is a logical entity.
+
+A class can also be defined as a blueprint from which you can create an individual object. Class doesn't consume any space.
+ They define the properties and functionalities of the objects. For example, Laptop is a class and your laptop is an instance of it.
+ 
+ 
+ 
+ Types of classes
+> Normal classes
+> Anonymous classes
+> Nested classes
+
+Java inner class or nested class is a class that is declared inside the class or interface.
+
+We use inner classes to logically group classes and interfaces in one place to be more readable and maintainable.
+
+Additionally, it can access all the members of the outer class, including private data members and methods.
+
+Syntax of Inner class
+class Java_Outer_class{  
+ //code  
+ class Java_Inner_class{  
+  //code  
+ }  
+}  
+
