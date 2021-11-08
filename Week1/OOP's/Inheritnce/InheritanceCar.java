@@ -1,6 +1,6 @@
 
 public class InheritanceCar extends Vehicles {
-
+//constructor overloading
 	public InheritanceCar(int i, String string) {
 		super(i,string);
 	}
