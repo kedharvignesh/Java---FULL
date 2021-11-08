@@ -1,1 +1,30 @@
 
+Object :
+
+An object is an instance of a Class. It contains properties and functions. They are like real-world objects. For example, your car, house, laptop, etc. are all objects. They have some specific properties and methods to perform some action.
+
+
+
+An Object can be defined as an instance of a class. An object contains an address and takes up some space in memory. Objects can communicate without knowing the details of each other's data or code. The only necessary thing is the type of message accepted and the type of response returned by the objects.
+
+Example: A cow is an object because it has states like color, name, breed, etc. as well as behaviors like wagging the tail, shouting, eating, etc.
+
+//////////////////////////////////////////////////////////
+
+Ways to create object of a class :
+Using new keyword: 
+Test t = new Test();
+
+Using Class.forName(String className) method: 
+Test obj = (Test)Class.forName("com.p1.Test").newInstance();
+
+Using clone() method:
+Test t1 = new Test();
+Test t2 = (Test)t1.clone();
+
+Anonymous objects
+Objects that are instantiated but are not stored in a reference variable. 
+They are used for immediate method calling.
+They will be destroyed after method calling.
+
+////////////////////////////////////////////////////////
