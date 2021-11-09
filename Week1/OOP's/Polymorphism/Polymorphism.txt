@@ -61,3 +61,27 @@ Example of dynamic binding
 11.	 }  
 12.	}  
 
+
+
+
+
+Overriding
+Redefining a method in subclass inherited from superclass with same name.
+Type of object determines which method in the same name to invoke.
+
+Rules:
+> Can't override private/final/Static methods
+> Can't override a constructor
+> Protected method from superclass can be inherited only in public, not private. 
+> Static methods can not be overridden(Method Overriding vs Method Hiding): 
+When you define a static method with same signature as a static method in base class, it is known as method hiding.
+> The overriding method must have same return type (or subtype)
+	From JAVA 5.0, overriden method in subclass can have different return type. But that return type must be a subtype of superclass method's return type. This is covariant return type.
+> Invoking overridden method from sub-class
+	Use 'Super' keyword to invoke overidden method in superclass.
+> Overriding classes with exception:
+	> Use same exception or sub class exception while overriding in subclass. But don't use parent exception (Exception) in subclass.
+	
+Overriding vs Overloading :
+> Overloading is about same method have different signatures. Overriding is about same method, same signature but different classes connected through inheritance.
+> Overloading is an example of compiler-time polymorphism and overriding is an example of run time polymorphism.
