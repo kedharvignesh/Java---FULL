@@ -1,3 +1,31 @@
+Inheritance (The keyword used for inheritance is extends)
+Definition:
+	> Inheritance can be defined as the process where one class acquires the properties (methods and fields) of another.
+	> The class which inherits the properties of other is known as subclass (derived class, child class) and the class whose properties are inherited is known as superclass (base class, parent class).
+
+> Superclass
+> Subclass
+
+Types: 
+Single Inheritance: A -> B
+Multilevel inheritance: A -> B -> C
+Hierarchical Inheritance: A -> B & A -> C
+Multiple Inheritance: A -> C & B -> C
+	interface A
+	interface B
+	interface C extends A, B
+	class test implements C
+Hybrid Inheritance
+
+Features:
+> JAVA does not support multiple inheritance as there has to be only one superclass.
+With INTERFACE MI can be achieved.
+To prevent ambiguity.
+> Subclass can't inherit constructor of a superclass. But can invoke it.
+> Subclass can't access private members of superclass. But can be used using getter & setters from superclass.
+> Private method from superclass can't be inherited
+
+
 Inheritance is the mechanism that allows one class to acquire all the properties from another class by inheriting the class. We call the inheriting class a child class and the inherited class as the superclass or parent class.
 
 It provides code reusability . 
