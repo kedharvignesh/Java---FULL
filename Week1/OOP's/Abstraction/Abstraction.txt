@@ -1,0 +1,27 @@
+Hiding internal details and showing functionality is known as abstraction.
+
+
+> abstraction means hiding the complex implementation details of a program, exposing only the API required to use the implementation. 
+> A Java program is also a great example of abstraction. Here java takes care of converting simple statements to machine language and hides the inner implementation details from the outer world.
+
+To acheive  abstraction :
+> abstract class (0-100%)
+> Interface (100%)
+
+Advantages of abstraction :
+> Security
+> Enhancement - For example if we are changing or upgrading software we have just way of implementing , set of rules remains same .
+> enhances loose coupling
+
+
+Abstract class :
+> It cannot be instantiated 
+> It must be extended to a class in order to use .
+
+
+Interface :
+
+> It is set of rules 
+> all variables are by default final and static
+> upto java 8 all methods were abstract in interface
+>  after java 8 we can define default method and static method in interface.
