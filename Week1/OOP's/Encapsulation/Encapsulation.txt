@@ -8,3 +8,11 @@ Encapsulation acheived by = Data hiding + abstraction .
 How Encapsulation work ?
 > By hiding all data members 
 > making methods accessble outside the class (usually with some validation ) - by convention getter and setter methods are used 
+
+
+The following are some of the Advantages of Encapsulation.
+
+
+> Ability to reuse or modify the code based on the requirements
+> Security == Limits the accessibility of data
+> Easiness in unit testing as the code is encapsulated
