@@ -53,3 +53,9 @@ Abstract classes can implement private and protected methods
 Abstract classes should be used for (partial) implementation. They can be a mean to restrain the way API contracts should be implemented.
 
 
+interface from java 8 :
+can have default method - which allows the implementation class to work normal even though we add this method to interface
+> we can override default method
+
+> Static methods are allowed from java 8 .
+>Its best to use only interface when we dont require objects , as we can run main method from interface
