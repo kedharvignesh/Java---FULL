@@ -1,0 +1,21 @@
+
+
+
+
+
+
+
+
+
+
+Throws Vs Throw
+Throw
+	> Used to throw single exception
+	> Syntax: Exception is followed by variable
+	> Propagates only unchecked exception
+	> Handled within a method
+Throws
+	> Used to throw multiple exceptions seperated by commas
+	> Syntax: Exception is followed by exception class names
+	> Propagates only checked exception
+	> Handled with a method signature
