@@ -1,7 +1,20 @@
+ An exception is an error event that can happen during the execution of a program and disrupts its normal flow. 
+ 
+ >ava provides a robust and object-oriented way to handle exception scenarios known as Java Exception Handling.
+ >The code that specifies what to do in specific exception scenarios is called exception handling.
+ 
+> Java is an object-oriented programming language. So whenever an error occurs while executing a statement, it creates an exception object.
 
+        Throwable Class
+	>exception
+	>Error{stackoverflowerror , outofmemoryError ... etc}
 
-
-
+Exception:
+>IOException
+>SQLException ... etc
+>RuntimeError :
+          >ArithmeticException
+	  >OutOfboundexcption....etc
 
 
 
