@@ -22,5 +22,33 @@ Array                                   Collection
     increase programming complexity        
             
             
+IMportant   interfaces in Collection Framework :
+1. Collection
+2. List
+3. Set
+4. SortedSet
+5. NavigableSet
+6. Queue
+   > All the above interfaces are sub interfaces of collection , which is sub-interface of iterable ihterface .
+
+ > Note : Map is not a sub interface of collection interface . 
+7. Map
+8. SortedMap 
+9. NavigableMap
+
+
+
+
+Collection vs Collections
+Collection
+	> Interface
+	> add(), clear(), remove(), contains()  (implemented through sub interfaces , like List , Set etc. )
+	> Has static, default and abstract methods
+Collections
+	> Utility class
+	> addAll(), sort(), dejoint(), copy()
+	> Only static methods
+
+            
 
 
