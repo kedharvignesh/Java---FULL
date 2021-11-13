@@ -66,8 +66,22 @@ LIST :
 
 
 
-5.Map 
+5.Map :
+> Not a sub interface of Collection    ,  so Collections.  method are not applicable here 
+> It has two entries for each object , key , value pair.
 
+
+
+> Hashmap
+> LinkedHashmap
+
+> WeakHashMap
+
+> IdenityHashMap
+
+> Hashtable
+> Dictionary
+> Properties
 
 
 
