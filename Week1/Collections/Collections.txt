@@ -37,6 +37,31 @@ IMportant   interfaces in Collection Framework :
 9. NavigableMap
 
 
+2.List :
+LIST :
+> insertion order maintained .
+>  duplicates allowed
+
+2.1. ArrayList
+2.2  LinkedList
+
+2.3 Vector (Legacy class , not used now )
+   2.3.a Stack
+   
+
+
+
+3 SET :
+>Duplicates not allowed
+
+> set interface has classes - hashset and linked hashset.
+
+>sorted set is sub interface of set and navigableSet is seub interface of sorted set and tree set is class of it.
+
+>HASHSET does not maintain insertion order.
+>linkedhashset maintains insertion order.
+
+
 
 
 Collection vs Collections
