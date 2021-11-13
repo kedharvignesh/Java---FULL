@@ -1,0 +1,26 @@
+Collection = group of objects 
+collection frame work = it contains lot of classes and interfaces , (api's) used for collection . (to store and manipulate)
+
+why Collections framework ??
+> So to store and handle many number of variables Arrays was created .
+> But there are many drawbacks with array , mainly predetrmined memory  and difficult to do operations with Array .
+> To rectify these drawbacks Collections framework was introduced , to handle group of objects  and it contains lot of APIs with it .
+
+
+
+Array                                   Collection 
+
+> fixed size                          > Growable
+> its not used where memory           >  better in terms of memory
+      is preferred     
+> Performance is better               > comparitively low
+>can hold both primitive and          > can hold only objects  (primitive data  types will be automatically converted into wrapper class objects)
+            objects
+> readymade methods or api's          > lots of API Avilable , so easy to program
+   are not available
+    (no underlined datastructure)
+    increase programming complexity        
+            
+            
+
+
