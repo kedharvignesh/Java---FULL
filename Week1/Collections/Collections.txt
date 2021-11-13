@@ -60,6 +60,13 @@ LIST :
 
 >HASHSET does not maintain insertion order.
 >linkedhashset maintains insertion order.
+> TreeEt maintains sorted order .
+
+
+
+
+
+5.Map 
 
 
 
