@@ -85,7 +85,7 @@ LINKEDHASHSET :
 >Child class of Hashset
 > Exactly same as Hashset in terms of constructors .
 > main difference is insertion ordeer is preserved here .
-> underlined data structure is hybrid - LinkedList + HashSet
+> underlined data structure is hybrid - LinkedList + Hashtable
 
 
 5.Map :
