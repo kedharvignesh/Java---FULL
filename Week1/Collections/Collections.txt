@@ -48,11 +48,17 @@ LIST :
 2.3 Vector (Legacy class , not used now )
    2.3.a Stack
    
+   
+ArrayList vs Vector
+> both are similar in many aspect 
+> arrayList is not thread safe and synvhronized but vector is vice versa .
+   
 
 
 
 3 SET :
 >Duplicates not allowed
+
 
 > set interface has classes - hashset and linked hashset.
 
@@ -62,6 +68,11 @@ LIST :
 >linkedhashset maintains insertion order.
 > TreeEt maintains sorted order .
 
+HASHSET :
+> underlined algorithm - HashTable
+> values are stored based on the hash values , so order is not maintained .
+> null values can be stored only once .
+> ITS best for search operation , since it uses hash algorithm
 
 
 
