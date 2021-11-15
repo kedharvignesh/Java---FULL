@@ -74,7 +74,18 @@ HASHSET :
 > null values can be stored only once .
 > ITS best for search operation , since it uses hash algorithm
 
+Hashset constructors ;
+> HashSet hs = new HashSet(); this will create set with initial capacity of 16 and fill ratio = 0.75 (after filling .75 new object will be created ) 
+> HashSet hs = new HashSet(initital capacity); 
+> HashSet hs = new HashSet(initial capacity , customized fill ratio(we can change from 0.75 to 0.9 for eg ) );
+> HashSet hs = new HashSet(Collection c);
 
+
+LINKEDHASHSET :
+>Child class of Hashset
+> Exactly same as Hashset in terms of constructors .
+> main difference is insertion ordeer is preserved here .
+> underlined data structure is hybrid - LinkedList + HashSet
 
 
 5.Map :
