@@ -91,7 +91,7 @@ LINKEDHASHSET :
 
 5.Map :
 > Not a sub interface of Collection    ,  so Collections.  method are not applicable here 
-> It has two entries for each object , key , value pair.
+> each   key , value pair is called an entry in map , in this key cannot have duplicates but , values can have .
 
 
 
