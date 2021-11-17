@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,161 +21,186 @@ import java.util.Set;
 //    Print out which group won and the number of battles won for each group.
 
 
-public class CollectionChallenge1 {
+public class HeroVsVillain {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		Hero spiderMan = new Hero("spiderman");
-		Hero shaktiMaan = new Hero("Shaktimaan");
-		Hero batMan = new Hero("Batman");
-		
-		Set<Hero> hero = new LinkedHashSet<Hero>();
-		hero.add(spiderMan);
-		hero.add(batMan);
-		hero.add(shaktiMaan);
-		
-		
-		Villain venom = new Villain("Venom");
-		Villain kabali = new Villain("Kabali");
-		Villain joker = new Villain("joker");
-		
-		Set<Villain> villain = new LinkedHashSet<Villain>();
-		villain.add(venom);
-		villain.add(joker);
-		villain.add(kabali);
-		
-		Map<Victory, Integer> victory = new HashMap<Victory, Integer>(); 
-		
-		System.out.println("Fight  starts : ");
-		
-		Random rand = new Random();
-		
-		List<Hero> heroList = new ArrayList<Hero>(hero);
-		List<Villain> villainList = new ArrayList<Villain>(villain);
-		
-		
-		Hero fight1Hero = heroList.get(rand.nextInt(heroList.size()));
-		Villain fight1Villain = villainList.get(rand.nextInt(villainList.size()));
-		
-//		System.out.println(fight1Hero);
-//		System.out.println(fight1Villain);
-		int heroVictory= 0;
-		int villainVictory=0; 
-		while(endFight(hero,villain)) {
-			
-		while(knockout(fight1Hero, fight1Villain)>0) { 
-				
-		fight1Villain.villainAttack(fight1Hero);
-		fight1Hero.HeroAttack(fight1Villain);
-				
-		}
-		if(fight1Hero.getHealthHero()<1 ) {
-			System.out.println("villain wins ");
-			villainVictory++;
-			hero.remove(fight1Hero);
-			heroList.remove(fight1Hero);
-			if(heroList.size()>0) {fight1Hero=heroList.get(rand.nextInt(heroList.size()));}
-		}
-		if(fight1Villain.getHealthVilain()<1 ) {
-			System.out.println("hero wins");
-			heroVictory++;
-			villain.remove(fight1Villain);
-			villainList.remove(fight1Villain);
-			if(villainList.size()>0) {fight1Villain=villainList.get(rand.nextInt(villainList.size()));}
-		}
-		
-		}
-		
-		victory.put(Victory.HERO_VICTORIES, heroVictory);
-		victory.put(Victory.VILLAIN_VICTORIES, villainVictory);
-		
-		System.out.println(victory);
-		
-		
-
+	enum CHARACTER{
+		HERO,VILLAIN;
 	}
-	static int knockout (Hero h , Villain v) {
-		if (h.getHealthHero()<1 || v.getHealthVilain()<1) {
-			return 0 ;
-		}else return 1;
+	public static void main(String[] args) {
+	
+		// Creating Characters :
+	
+		// Creating 3 heroes 
+		Character spiderMan = new Character("spiderman",CHARACTER.HERO);
+		Character shaktiMaan = new Character("Shaktimaan",CHARACTER.HERO);
+		Character batMan = new Character("Batman",CHARACTER.HERO);
+		// Creating 3 villains
+		Character venom = new Character("Venom",CHARACTER.VILLAIN);
+		Character kabali = new Character("Kabali",CHARACTER.VILLAIN);
+		Character joker = new Character("joker",CHARACTER.VILLAIN);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//Adding Characters to set
+		
+		// Adding heroes to a set 
+		Set<Character> heroes = new LinkedHashSet<Character>();
+		heroes.add(spiderMan);
+		heroes.add(batMan);
+		heroes.add(shaktiMaan);
+		// adding villains to a set .	
+		Set<Character> villains = new LinkedHashSet<Character>();
+		villains.add(venom);
+		villains.add(joker);
+		villains.add(kabali);
+		
+				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		System.out.println("Fight  starts : \n");
+		
+		// Selecting Random hero and a villain 
+		Random rand = new Random();
+		List<Character> heroList = new ArrayList<Character>(heroes);
+		List<Character> villainList = new ArrayList<Character>(villains);
+		
+		int heroVictory= 0;
+		int villainVictory=0;
+		
+		while(endFight(heroes,villains)) {
+			Character heroSelect = heroList.get(rand.nextInt(heroList.size()));
+			Character villainSelect = villainList.get(rand.nextInt(villainList.size()));
+		while(knockoutCharacter(heroSelect, villainSelect)) { 			
+		villainSelect.villainAttack(heroSelect);
+		heroSelect.heroAttack(villainSelect);			
+		}
+		if(heroSelect.getHealth()<1 ) {
+			System.out.println(villainSelect.getName()+" wins "+"(villain)" );
+			villainVictory++;
+			heroes.remove(heroSelect);
+			heroList.remove(heroSelect);
+			if(!heroList.isEmpty()) {heroSelect=heroList.get(rand.nextInt(heroList.size()));}
+		}
+		if(villainSelect.getHealth()<1 ) {
+			System.out.println(heroSelect.getName()+" wins"+"(Hero)");
+			heroVictory++;
+			villains.remove(villainSelect);
+			villainList.remove(villainSelect);
+			if(!villainList.isEmpty()) {villainSelect=villainList.get(rand.nextInt(villainList.size()));}
+		}
+		
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// Updating final scoreBoard 
+		EnumMap<CHARACTER, Integer> scoreBoard = new EnumMap<CHARACTER, Integer>(CHARACTER.class);
+		
+		scoreBoard.put(CHARACTER.HERO, heroVictory);
+		scoreBoard.put(CHARACTER.VILLAIN, villainVictory);
+		System.out.println("\n");
+		System.out.println(" Final Score : ");
+		System.out.println(scoreBoard+"\n\n\n");
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		// Display Characters 
+		displayCharacter(shaktiMaan);
+		displayCharacter(kabali);
+		
+		
+
 	}
 	
-	static boolean endFight (Set<Hero> a , Set<Villain> b) {
+	static boolean knockoutCharacter (Character h , Character v) {
+		if (h.getHealth()<1 || v.getHealth()<1) {
+			return false ;
+		}else return true;
+	}
+	
+	static boolean endFight (Set<Character> a , Set<Character> b) {
 		if (a.isEmpty() || b.isEmpty()) {
 			return false;
 		}else return true;
 	}
 	
-	
+	static void displayCharacter(Character character) {
+		System.out.println("Character = "+character);
+	}
 	
 
 }
 
-enum Victory{
-	HERO_VICTORIES,VILLAIN_VICTORIES;
-}
+	
 
-class Villain {
+
+
+class Character {
 	private String name;
-	private int healthVillain=100 ;
-	public Villain(String name) {
-		
-		this.name = name;
+	private int health=100 ;
+	private Enum< HeroVsVillain.CHARACTER> type; 
+	
+	
+	public Character(String name,  HeroVsVillain.CHARACTER hero) {
+		super();
+		this.name = name;		
+		this.type = hero;
 	}
-	public Villain() {
-		}
-	public int getHealthVilain() {
-		return healthVillain;
+	public int getHealth() {
+		return health;
 	}
-	public void setHealthVillain(int health) {
-		this.healthVillain = health;
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	public String getName() {
+		return name;
 	}
 	Random rand = new Random();
 	
-	void villainAttack(Hero h) {
+	void villainAttack(Character hero ) {
 		int attack = rand.nextInt(100);
 		
-		
-		h.setHealthHero(h.getHealthHero()-attack);
-		
+		hero.setHealth(hero.getHealth()-attack);
 	}
+	void heroAttack(Character villain ) {
+		int attack = rand.nextInt(100);
+		
+		villain.setHealth(villain.getHealth()-attack);
+	}
+	
+		
 	@Override
 	public String toString() {
-		return "Villain [name=" + name + ", healthVillain=" + healthVillain + "]";
+		return ""+this.type +" [name=" + name + ", health=" + health + "]";
 	}
 	
 	
 }
 
-class Hero {
-	private String name;
-	private int healthHero=100 ;
-	public Hero(String name) {
-		
-		this.name = name;
-	}
-	public Hero() {
-	
-	}
-	public int getHealthHero() {
-		return healthHero;
-	}
-	public void setHealthHero(int health) {
-		this.healthHero = health;
-	}
-	Random rand = new Random();
-	
-	void HeroAttack(Villain v) {
-		int attack = rand.nextInt(100);
-		
-		v.setHealthVillain(v.getHealthVilain()-attack);
-		
-	}
-	@Override
-	public String toString() {
-		return "Hero [name=" + name + ", healthHero=" + healthHero + "]";
-	}
-	
-	
-}
