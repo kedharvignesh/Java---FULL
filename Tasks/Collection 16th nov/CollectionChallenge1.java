@@ -139,13 +139,13 @@ public class HeroVsVillain {
 
 	}
 	
-	static boolean knockoutCharacter (Character h , Character v) {
+	static boolean knockoutCharacter (Character hero , Character villain) {
 		if (h.getHealth()<1 || v.getHealth()<1) {
 			return false ;
 		}else return true;
 	}
 	
-	static boolean endFight (Set<Character> a , Set<Character> b) {
+	static boolean endFight (Set<Character> hero , Set<Character> villain) {
 		if (a.isEmpty() || b.isEmpty()) {
 			return false;
 		}else return true;
