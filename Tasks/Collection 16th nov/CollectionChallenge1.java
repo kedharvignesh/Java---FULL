@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -140,13 +141,13 @@ public class HeroVsVillain {
 	}
 	
 	static boolean knockoutCharacter (Character hero , Character villain) {
-		if (h.getHealth()<1 || v.getHealth()<1) {
+		if (hero.getHealth()<1 || villain.getHealth()<1) {
 			return false ;
 		}else return true;
 	}
 	
 	static boolean endFight (Set<Character> hero , Set<Character> villain) {
-		if (a.isEmpty() || b.isEmpty()) {
+		if (hero.isEmpty() || villain.isEmpty()) {
 			return false;
 		}else return true;
 	}
