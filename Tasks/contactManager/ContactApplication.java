@@ -123,8 +123,9 @@ public class ContactApplication {
 				if(searchName.equals(i.getName())) {
 					contactIndex=contactList.indexOf(i);
 					System.out.println(i.toString());
+					break;
 				}else {
-					System.out.println("else block :");
+					
 					contactIndex =-1;					
 				}
 			}
@@ -142,6 +143,7 @@ public class ContactApplication {
 				if(searchNumber==(i.getPhone())) {
 					contactIndex=contactList.indexOf(i);
 					System.out.println(i.toString());
+					break;
 				}else {
 					
 					contactIndex =-1;
@@ -158,6 +160,7 @@ public class ContactApplication {
 				if(searchMail.equals(i.getMail())) {
 					contactIndex=contactList.indexOf(i);
 					System.out.println(i.toString());
+					break;
 				}else {
 					
 					contactIndex =-1;
