@@ -107,6 +107,10 @@ LINKEDHASHSET :
 > Properties
 
 
+Treemap :
+> UNderlined data strucure is red black tree
+
+
 
 Collection vs Collections
 Collection
