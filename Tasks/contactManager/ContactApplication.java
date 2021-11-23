@@ -1,253 +1,201 @@
 package contactManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ContactApplication {
-	
+
 	Scanner scanner = new Scanner(System.in);
-	public static ArrayList<Contact> contactList = new ArrayList<Contact>();
-	
+	static HashMap<String,Contact> contactsMap = new HashMap<String,Contact>();
 	 
+	static HashMap<String, String> namesMap = new HashMap<String, String>();
+	static HashMap<Integer, String> numbersMap = new HashMap<Integer, String>();
+	static HashMap<String, String> emailsmap = new HashMap<String, String>();
 	
 	
+	
+
 	void loadContacts() {
-		 try {
-			 FilereadWrite.load();
-			 }catch (Exception e) {
-				System.out.println("No contacts Found");
+		try {
+			FilereadWrite.load();
+			FilereadWrite.loadNames();
+			FilereadWrite.loadNumber();
+			FilereadWrite.loadMail();
+		} catch (Exception e) {
+			System.out.println("No contacts Found");
+		}
+
+	}
+	
+
+	void runMenu() {
+
+		try {
+
+			printMenu();
+			int select = scanner.nextInt();
+			while (select != 0) {
+				switch (select) {
+				case 1:
+					Contact contact=searchContact();
+					contactAction(contact);
+					break;
+				case 2:
+					createContact();
+					break;				
+				case 3:
+					viewContacts();
+					break;
+				case 0:
+					select = 0;
+					break;
+				default:
+					System.out.println("\n\tInvalid input - press 1 or 2 or 3 else 0 to exit  ");
+				}
+				runMenu();
+				break;
+
 			}
-		 
-		 sortContacts();
-	 }
-	
-	
-	
-	
-	void menu() {
-		
-		 try {
-			 
-			 
-	
-		System.out.println("\n\nContacts : \n");
-		System.out.println("Select an option :\n"
-				+ "1-Search \n"
-				+ "2-Create \n"
-				+ "3-Update \n"
-				+ "4-Delete \n"
-				+ "5-View all Contacts \n"				
-				+ "0-Exit \n");
-		int select = scanner.nextInt();
-		while(select!=0) {
-		switch(select) {
+		} catch (InputMismatchException e) {
+			System.out.println(" Invalid input ");
+
+		}
+		FilereadWrite.save();
+
+	}
+
+	private Contact searchContact() {
+		String id = "";
+		System.out.println(
+				"Select an option : \n" + "1-Search by name \n" + "2-Search by phone \n" + "3-Search by E-mail");
+		int selectSearch = scanner.nextInt();
+
+		Contact contact = null;
+		switch (selectSearch) {
 		case 1:
-			searchContact();
+			id = searchByName();
+			contact = contactsMap.get(id);
+			System.out.println(contact);
 			break;
 		case 2:
-			createContact();
+			id = searchByPhone();
+			contact=contactsMap.get(id);
+			System.out.println(contact);
 			break;
 		case 3:
-			updateContact();
+			id = searchByMail();
+			contact=contactsMap.get(id);
+			System.out.println(contact);
 			break;
-		case 4:
-			deleteContact();
+		
+		default:
+			System.out.println("\n\tInvalid input - going back to menu   ");
+			runMenu();
+		}
+		return contact;
+	}
+
+	// search methods
+	private String searchByName() {
+		System.out.println("Enter search name :");
+		String searchName = scanner.next().toUpperCase();
+		return namesMap.get(searchName);
+	}
+
+	private String searchByPhone() {
+		System.out.println("Enter search phone number :");
+		int searchNumber = scanner.nextInt();
+		return numbersMap.get(searchNumber);
+		
+	}
+
+	private String searchByMail() {
+		System.out.println("Enter search mail :");
+		String searchMail = scanner.next().toLowerCase();
+		return emailsmap.get(searchMail);
+
+	}
+	
+	void contactAction(Contact contact) {
+		if (contact != null ) {
+		System.out.println("Select an option :\n" + "1-Update \n" + "2-Delete \n" );
+		int contactOption=scanner.nextInt();
+		switch(contactOption) {
+		case 1:
+			updateContact(contact);
 			break;
-		case 5:
-			viewContacts();
-			break;
-		case 6:
-			select=0;
+		case 2:
+			if(deleteContact(contact)) System.out.println(" Deleted Contact");;
 			break;
 		default :
-			System.out.println("\n\tInvalid input - press 1 or 2 else 0 to exit  ");
+				System.out.println(" Invalid selection \n");
+				runMenu();
+		}		
 		}
-		menu();
-		break;
-		
-		}
-		 }catch (InputMismatchException e) {
-			System.out.println(" Invalid input ");
-			
-		}
-		 FilereadWrite.save();
-		 
-		 
 	}
-	 
+
+	private void createContact() {
+		System.out.println(" Enter new  contact :\n\n");
+		String name = enterName();
+		int number = enterNumber();
+		String mail = enterEmail();
+		contactsMap.put((name+mail+number),new Contact(name, number, mail));
+		System.out.println("Contact saved");
+		numbersMap.put(number, (name+mail+number));
+		namesMap.put(name, (name+mail+number));
+		emailsmap.put(mail, (name+mail+number));
+	}
+	
 	
 
-	
-		
-		private int searchContact() {
-			 int contactIndex = 0 ;
-			 System.out.println("Select an option : \n"
-			 		+ "1-Search by name \n"
-			 		+ "2-Search by phone \n"
-			 		+ "3-Search by E-mail");
-			 int selectSearch=scanner.nextInt();
-			 
-			 switch(selectSearch) {
-			 case 1:
-				 contactIndex =searchByName();
-				  
-				 break;
-			 case 2:				 
-				 contactIndex = searchByPhone();
-				 break;
-			 case 3:				
-				 contactIndex= searchByMail();
-				 break;
-			 case 0:
-				 menu();
-				 break;
-			 
-			 default :
-				 System.out.println("\n\tInvalid input - press 1 or 2 or 3 else 0 for menu  ");
-					 
-			 } if (contactIndex<0)System.out.println("Contact not found");
-			return contactIndex;
-			
-		}
-		
-		
-		// search methods 
-		 private int searchByName() {
-			 int contactIndex = 0 ;
-			System.out.println("Enter search name :");
-			String searchName = scanner.next().toUpperCase();
-			for(Contact i:contactList) {
-				if(searchName.equals(i.getName())) {
-					contactIndex=contactList.indexOf(i);
-					System.out.println(i.toString());
-					break;
-				}else {
-					
-					contactIndex =-1;					
-				}
-			}
-			return contactIndex;
-		}
+	private void updateContact(Contact contact) {
 
+		deleteContact(contact);
+		createContact();		
+		System.out.println(" Updated contact");
 		
-		 
-		 
-		 private int searchByPhone() {
-			int contactIndex = 0 ;
-			System.out.println("Enter search phone number :");
-			int searchNumber = scanner.nextInt();
-			for(Contact i:contactList) {
-				if(searchNumber==(i.getPhone())) {
-					contactIndex=contactList.indexOf(i);
-					System.out.println(i.toString());
-					break;
-				}else {
-					
-					contactIndex =-1;
-				}
-			}
-			return contactIndex;
-		}
+	}
 
-		private int searchByMail() {
-			int contactIndex = 0 ;
-			System.out.println("Enter search mail :");
-			String searchMail = scanner.next().toLowerCase();
-			for(Contact i:contactList) {
-				if(searchMail.equals(i.getMail())) {
-					contactIndex=contactList.indexOf(i);
-					System.out.println(i.toString());
-					break;
-				}else {
-					
-					contactIndex =-1;
-				}
-			}return contactIndex;
-			
-		}
+	private boolean deleteContact(Contact contact) {
+		
+		if(contactsMap.remove(contact.getId()) != null)
+			return true;
+		namesMap.remove(contact.getName());
+		numbersMap.remove(contact.getPhone());
+		emailsmap.remove(contact.getMail());
+		return false;
+	
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		private void createContact() {
-			System.out.println(" save contacts :\n\n");
-			System.out.println("Enter contact name :");
-			String name = scanner.next().toUpperCase();
-			System.out.println(" Enter phone number :");
-			int phone = scanner.nextInt();
-			System.out.println(" Enter E-mail :");
-			String email = scanner.next().toLowerCase();
-			
-			if(contactList.add(new Contact(name,phone,email)))
-			System.out.println("Contact saved");
-			
-			
-			
-		}
-		
+	}
 	
-		
-		private  void updateContact() {
-				
-				int index = searchContact();
-				
-				if(index>=0) {
-				System.out.println("\nEnter new Name : \n");
-				String newName = scanner.next().toUpperCase();
-				System.out.println("Enter new Number : ");
-				int newNumber= scanner.nextInt();
-				System.out.println("Enter new Email : ");
-				String newMail=scanner.next().toLowerCase();
-				Contact contact = new Contact(newName,newNumber,newMail);
-				contactList.set(index, contact);
-				System.out.println(" Updated contact");
-				}
-				
-			}
-		
-		
-		
-		
-		private void deleteContact() {
-			int index = searchContact();
-			if(index>=0) {
-			contactList.remove(index);
-			System.out.println("Contact deleted");
-			
-			}
-		}
-		
-	
-		void viewContacts() {
-			System.out.println("All contacts : \n"+contactList+"\n\n");
-		}
-		
-		
-		
-		
-		void sortContacts() {
-			Comparator<Contact> compare= new Comparator<Contact>() {
-				
-				@Override
-				public int compare(Contact o1, Contact o2) {
-					
-					return o1.getName().compareTo(o2.getName());
-				}
-			}; 
-			Collections.sort(contactList, compare);;
-		}
-	 
-	 
-	
+
+	String enterName() {
+		System.out.println("Enter contact name :");
+		return scanner.next().toUpperCase();
+	}
+
+	int enterNumber() {
+		System.out.println(" Enter phone number :");
+		return scanner.nextInt();
+	}
+
+	String enterEmail() {
+		System.out.println(" Enter E-mail :");
+		return scanner.next().toLowerCase();
+	}
+
+	void viewContacts() {
+
+		System.out.println("All contacts : \n" + contactsMap + "\n\n");
+	}
+
+	void printMenu() {
+		System.out.println("\n\nContacts Menu : \n");
+		System.out.println("Select an option :\n" + "1-Search \n" + "2-Create \n" 
+				+ "3-View all Contacts \n" + "0-Exit \n");
+	}
+
+
 
 }

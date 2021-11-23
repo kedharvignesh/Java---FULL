@@ -6,7 +6,10 @@ public interface Main {
 		// TODO Auto-generated method stub
 		ContactApplication contactApplication = new ContactApplication();
 		contactApplication.loadContacts();
-		contactApplication.menu();
+		contactApplication.runMenu();
+		
+		
+		
 
 	}
 
