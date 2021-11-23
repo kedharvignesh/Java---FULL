@@ -50,7 +50,7 @@ public class FilereadWrite {
 
 				if (fields.length > 0) {
 					
-					ContactApplication.namesMap.put(fields[3], fields[0]);
+					ContactApplication.namesMap.computeIfAbsent(fields[0],k-> new ArrayList<String>()).add(fields[3]);
 				}
 			}
 		} catch (Exception e) {
@@ -100,7 +100,7 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					ContactApplication.emailsmap.put(fields[2], fields[3]);
+					ContactApplication.emailsMap.put(fields[2], fields[3]);
 				}
 			}
 		} catch (Exception e) {

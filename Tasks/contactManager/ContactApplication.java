@@ -1,21 +1,18 @@
 package contactManager;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.Set;
 
 public class ContactApplication {
 
 	Scanner scanner = new Scanner(System.in);
 	static HashMap<String, Contact> contactsMap = new HashMap<String, Contact>();
 
-	static HashMap<String, String> namesMap = new HashMap<String, String>();
+	static HashMap<String, ArrayList<String>> namesMap = new HashMap<String, ArrayList<String>>();
 	static HashMap<Integer, String> numbersMap = new HashMap<Integer, String>();
-	static HashMap<String, String> emailsmap = new HashMap<String, String>();
+	static HashMap<String, String> emailsMap = new HashMap<String, String>();
 
 	void loadContacts() {
 		try {
@@ -74,8 +71,7 @@ public class ContactApplication {
 		Contact contact = null;
 		switch (selectSearch) {
 		case 1:
-			id = searchByName();
-			contact = contactsMap.get(id);
+			contact = searchByName();
 			System.out.println(contact);
 			break;
 		case 2:
@@ -97,18 +93,35 @@ public class ContactApplication {
 	}
 
 	// search methods
-	private String searchByName() {
-		String key = "";
-		System.out.println("Enter search name :");
-		String searchName = scanner.next().toUpperCase();
-		if (namesMap.containsValue(searchName)) {
-			for (Entry<String, String> entries : namesMap.entrySet()) {
-				if (entries.getValue().equals(searchName)) {
-					key = entries.getKey();
-				}
-			}
+	private Contact searchByName() {
+		Contact contact = null;
+		try {
+			System.out.println("Enter search name :");
+			String searchName = scanner.next().toUpperCase();
+			ArrayList<String> id = namesMap.get(searchName);
+			contact = contactSelection(id);
+		} catch (Exception e) {
+			System.out.println(" Invalid input ");
+			runMenu();
 		}
-		return key;
+		return contact;
+	}
+
+	private Contact contactSelection(ArrayList<String> id) {
+		Contact contact;
+		int count = 0;
+		if (id.size() > 1) {
+			for (String i : id) {
+				System.out.println((count + 1) + "-" + contactsMap.get(i));
+				count++;
+			}
+			System.out.println(" selecet a contact :");
+			int selection = scanner.nextInt();
+			contact = contactsMap.get(id.get(selection - 1));
+		} else {
+			contact = contactsMap.get(id.get(0));
+		}
+		return contact;
 	}
 
 	private String searchByPhone() {
@@ -121,7 +134,7 @@ public class ContactApplication {
 	private String searchByMail() {
 		System.out.println("Enter search mail :");
 		String searchMail = scanner.next().toLowerCase();
-		return emailsmap.get(searchMail);
+		return emailsMap.get(searchMail);
 
 	}
 
@@ -153,8 +166,8 @@ public class ContactApplication {
 		contactsMap.put((name + mail + number), new Contact(name, number, mail));
 		System.out.println("Contact saved");
 		numbersMap.put(number, (name + mail + number));
-		namesMap.put(name, (name + mail + number));
-		emailsmap.put(mail, (name + mail + number));
+		namesMap.computeIfAbsent(name, k -> new ArrayList<String>()).add(name + mail + number);
+		emailsMap.put(mail, (name + mail + number));
 	}
 
 	private void updateContact(Contact contact) {
@@ -171,7 +184,7 @@ public class ContactApplication {
 			return true;
 		namesMap.remove(contact.getName());
 		numbersMap.remove(contact.getPhone());
-		emailsmap.remove(contact.getMail());
+		emailsMap.remove(contact.getMail());
 		return false;
 
 	}
@@ -193,7 +206,7 @@ public class ContactApplication {
 
 	void viewContacts() {
 
-		System.out.println("All contacts : \n" + contactsMap + "\n\n");
+		System.out.println("All contacts : \n" + contactsMap.values() + "\n\n");
 	}
 
 	void printMenu() {
