@@ -7,9 +7,6 @@ public interface Main {
 		ContactApplication contactApplication = new ContactApplication();
 		contactApplication.loadContacts();
 		contactApplication.runMenu();
-		
-		
-		
 
 	}
 

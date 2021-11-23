@@ -49,7 +49,8 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					ContactApplication.namesMap.put(fields[0], fields[3]);
+					
+					ContactApplication.namesMap.put(fields[3], fields[0]);
 				}
 			}
 		} catch (Exception e) {

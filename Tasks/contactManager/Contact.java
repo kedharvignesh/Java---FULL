@@ -12,7 +12,7 @@ public class Contact {
 		this.name = name;
 		this.phone = phone;
 		this.mail = mail;
-		this.id=name+mail+phone;
+		this.id = name + mail + phone;
 	}
 
 	// getters and setters
@@ -39,6 +39,7 @@ public class Contact {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+
 	public String getId() {
 		return id;
 	}
