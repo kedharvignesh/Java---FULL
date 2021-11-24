@@ -6,21 +6,25 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class ContactApplication {
+public class ContactApplication extends Thread {
 
 	Scanner scanner = new Scanner(System.in);
-	static HashMap<String, Contact> contactsMap = new HashMap<String, Contact>();
+	public HashMap<String, Contact> contactsMap = new HashMap<String, Contact>();
+	HashMap<String, ArrayList<String>> namesMap = new HashMap<String, ArrayList<String>>();
+	HashMap<Integer, String> numbersMap = new HashMap<Integer, String>();
+	HashMap<String, String> emailsMap = new HashMap<String, String>();
 
-	static HashMap<String, ArrayList<String>> namesMap = new HashMap<String, ArrayList<String>>();
-	static HashMap<Integer, String> numbersMap = new HashMap<Integer, String>();
-	static HashMap<String, String> emailsMap = new HashMap<String, String>();
+	@Override
+	public void run() {
+		loadContacts();
+	}
 
 	void loadContacts() {
 		try {
-			FilereadWrite.load();
-			FilereadWrite.loadNames();
-			FilereadWrite.loadNumber();
-			FilereadWrite.loadMail();
+			contactsMap = FilereadWrite.load();
+			namesMap = FilereadWrite.loadNames();
+			numbersMap = FilereadWrite.loadNumber();
+			emailsMap = FilereadWrite.loadMail();
 		} catch (Exception e) {
 			System.out.println("No contacts Found");
 		}
@@ -31,7 +35,6 @@ public class ContactApplication {
 
 		try {
 
-			printMenu();
 			int select = scanner.nextInt();
 			while (select != 0) {
 				switch (select) {
@@ -51,6 +54,7 @@ public class ContactApplication {
 				default:
 					System.out.println("\n\tInvalid input - press 1 or 2 or 3 else 0 to exit  ");
 				}
+				printMenu();
 				runMenu();
 				break;
 
@@ -59,7 +63,7 @@ public class ContactApplication {
 			System.out.println(" Invalid input ");
 
 		}
-		FilereadWrite.save();
+		FilereadWrite.save(contactsMap);
 
 	}
 
@@ -88,6 +92,7 @@ public class ContactApplication {
 
 		default:
 			System.out.println("\n\tInvalid input - going back to menu   ");
+			printMenu();
 			runMenu();
 		}
 		return contact;
@@ -103,6 +108,7 @@ public class ContactApplication {
 			contact = contactSelection(id);
 		} catch (Exception e) {
 			System.out.println(" Does not exist ");
+			printMenu();
 			runMenu();
 		}
 		return contact;
@@ -152,6 +158,7 @@ public class ContactApplication {
 				break;
 			default:
 				System.out.println(" Invalid selection \n");
+				printMenu();
 				runMenu();
 			}
 		}
@@ -163,7 +170,7 @@ public class ContactApplication {
 		int number = enterNumber();
 		String mail = enterEmail();
 		String id = UUID.randomUUID().toString();
-		contactsMap.put(id, new Contact(name, number, mail));
+		contactsMap.put(id, new Contact(name, number, mail, id));
 		System.out.println("Contact saved");
 		numbersMap.put(number, id);
 		namesMap.computeIfAbsent(name, k -> new ArrayList<String>()).add(id);
@@ -181,7 +188,6 @@ public class ContactApplication {
 	private void deleteContact(Contact contact) {
 
 		contactsMap.remove(contact.getId());
-
 		namesMap.remove(contact.getName());
 		numbersMap.remove(contact.getPhone());
 		emailsMap.remove(contact.getMail());

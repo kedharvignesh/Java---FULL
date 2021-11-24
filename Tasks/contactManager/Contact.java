@@ -7,14 +7,14 @@ public class Contact {
 	private String name;
 	private int phone;
 	private String mail;
-	private String id;
+	private final String id;
 
 	// Constructors
-	public Contact(String name, int phone, String mail) {
+	public Contact(String name, int phone, String mail, String id) {
 		this.name = name;
 		this.phone = phone;
 		this.mail = mail;
-		this.id = UUID.randomUUID().toString();
+		this.id = id;
 	}
 
 	// getters and setters

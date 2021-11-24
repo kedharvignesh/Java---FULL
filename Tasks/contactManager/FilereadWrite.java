@@ -5,14 +5,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class FilereadWrite {
 
 	static String file = "C:\\Users\\Admin\\eclipse-workspace\\FULL Contact Manager\\src\\contactManager\\Contacts.csv";
 
-	static public void load() {
+	public static HashMap<String, Contact> load() {
 		BufferedReader reader = null;
+		HashMap<String, Contact> loadContactsMap = new HashMap<String, Contact>();
 		try {
 			String line = "";
 			reader = new BufferedReader(new FileReader(file));
@@ -22,8 +24,8 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					ContactApplication.contactsMap.put(fields[3],
-							(new Contact(fields[0], Integer.parseInt(fields[1]), fields[2])));
+					loadContactsMap.put(fields[3],
+							(new Contact(fields[0], Integer.parseInt(fields[1]), fields[2], fields[3])));
 
 				}
 			}
@@ -36,10 +38,12 @@ public class FilereadWrite {
 
 			}
 		}
+		return loadContactsMap;
 	}
 
-	static public void loadNames() {
+	static public HashMap<String, ArrayList<String>> loadNames() {
 		BufferedReader reader = null;
+		HashMap<String, ArrayList<String>> loadNamesMap = new HashMap<String, ArrayList<String>>();
 		try {
 			String line = "";
 			reader = new BufferedReader(new FileReader(file));
@@ -49,8 +53,8 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					
-					ContactApplication.namesMap.computeIfAbsent(fields[0],k-> new ArrayList<String>()).add(fields[3]);
+
+					loadNamesMap.computeIfAbsent(fields[0], k -> new ArrayList<String>()).add(fields[3]);
 				}
 			}
 		} catch (Exception e) {
@@ -62,10 +66,12 @@ public class FilereadWrite {
 
 			}
 		}
+		return loadNamesMap;
 	}
 
-	static public void loadNumber() {
+	static public HashMap<Integer, String> loadNumber() {
 		BufferedReader reader = null;
+		HashMap<Integer, String> loadNumbersMap = new HashMap<Integer, String>();
 		try {
 			String line = "";
 			reader = new BufferedReader(new FileReader(file));
@@ -75,7 +81,7 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					ContactApplication.numbersMap.put(Integer.parseInt(fields[1]), fields[3]);
+					loadNumbersMap.put(Integer.parseInt(fields[1]), fields[3]);
 				}
 			}
 		} catch (Exception e) {
@@ -87,10 +93,12 @@ public class FilereadWrite {
 
 			}
 		}
+		return loadNumbersMap;
 	}
 
-	static public void loadMail() {
+	static public HashMap<String, String> loadMail() {
 		BufferedReader reader = null;
+		HashMap<String, String> loadEmailsMap = new HashMap<String, String>();
 		try {
 			String line = "";
 			reader = new BufferedReader(new FileReader(file));
@@ -100,7 +108,7 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					ContactApplication.emailsMap.put(fields[2], fields[3]);
+					loadEmailsMap.put(fields[2], fields[3]);
 				}
 			}
 		} catch (Exception e) {
@@ -112,15 +120,16 @@ public class FilereadWrite {
 
 			}
 		}
+		return loadEmailsMap;
 	}
 
-	static public void save() {
+	static public void save(HashMap<String, Contact> contacts) {
 		FileWriter fileWriter = null;
 		try {
 			fileWriter = new FileWriter(file);
 			fileWriter.append("Name , Phone , E-mail,ID  \n");
 
-			for (Entry<String, Contact> contact : ContactApplication.contactsMap.entrySet()) {
+			for (Entry<String, Contact> contact : contacts.entrySet()) {
 				fileWriter.append(contact.getValue().getName());
 				fileWriter.append(",");
 				fileWriter.append(String.valueOf(contact.getValue().getPhone()));
