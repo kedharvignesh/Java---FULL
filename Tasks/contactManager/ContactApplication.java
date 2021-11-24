@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class ContactApplication {
 
@@ -101,7 +102,7 @@ public class ContactApplication {
 			ArrayList<String> id = namesMap.get(searchName);
 			contact = contactSelection(id);
 		} catch (Exception e) {
-			System.out.println(" Invalid input ");
+			System.out.println(" Does not exist ");
 			runMenu();
 		}
 		return contact;
@@ -147,9 +148,7 @@ public class ContactApplication {
 				updateContact(contact);
 				break;
 			case 2:
-				if (deleteContact(contact))
-					System.out.println(" Deleted Contact");
-				;
+				deleteContact(contact);
 				break;
 			default:
 				System.out.println(" Invalid selection \n");
@@ -163,11 +162,12 @@ public class ContactApplication {
 		String name = enterName();
 		int number = enterNumber();
 		String mail = enterEmail();
-		contactsMap.put((name + mail + number), new Contact(name, number, mail));
+		String id = UUID.randomUUID().toString();
+		contactsMap.put(id, new Contact(name, number, mail));
 		System.out.println("Contact saved");
-		numbersMap.put(number, (name + mail + number));
-		namesMap.computeIfAbsent(name, k -> new ArrayList<String>()).add(name + mail + number);
-		emailsMap.put(mail, (name + mail + number));
+		numbersMap.put(number, id);
+		namesMap.computeIfAbsent(name, k -> new ArrayList<String>()).add(id);
+		emailsMap.put(mail, (id));
 	}
 
 	private void updateContact(Contact contact) {
@@ -178,14 +178,14 @@ public class ContactApplication {
 
 	}
 
-	private boolean deleteContact(Contact contact) {
+	private void deleteContact(Contact contact) {
 
-		if (contactsMap.remove(contact.getId()) != null)
-			return true;
+		contactsMap.remove(contact.getId());
+
 		namesMap.remove(contact.getName());
 		numbersMap.remove(contact.getPhone());
 		emailsMap.remove(contact.getMail());
-		return false;
+		System.out.println(" Contact Deleted");
 
 	}
 

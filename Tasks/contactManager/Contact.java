@@ -1,5 +1,7 @@
 package contactManager;
 
+import java.util.UUID;
+
 public class Contact {
 
 	private String name;
@@ -12,7 +14,7 @@ public class Contact {
 		this.name = name;
 		this.phone = phone;
 		this.mail = mail;
-		this.id = name + mail + phone;
+		this.id = UUID.randomUUID().toString();
 	}
 
 	// getters and setters
