@@ -30,7 +30,8 @@ public class VoteExceptionExample {
 class VoteException extends Exception{
 	public VoteException(String message) {
 		super(message);
-		System.out.println(" ");	}
+		
+	}
 	
 
 	
