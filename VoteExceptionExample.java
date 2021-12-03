@@ -6,7 +6,7 @@ public class VoteExceptionExample {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Enter Age :");
+		System.out.println("Enter Age  :");
 		Scanner scanner = new Scanner(System.in);
 		
 		int age = scanner.nextInt();
@@ -16,7 +16,7 @@ public class VoteExceptionExample {
 				throw new VoteException(" Under Age");
 			}
 		}catch(VoteException e) {
-			System.out.println("vote Exception catched");
+			System.out.println("vote Exception catched - Age is underAge");
 			e.printStackTrace();
 			e.getMessage();
 		}
@@ -29,8 +29,7 @@ public class VoteExceptionExample {
 
 class VoteException extends Exception{
 	public VoteException(String message) {
-		super(message);
-		
+		super(message);	
 	}
 	
 
