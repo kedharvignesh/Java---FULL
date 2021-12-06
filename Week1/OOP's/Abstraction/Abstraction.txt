@@ -1,0 +1,61 @@
+Hiding internal details and showing functionality is known as abstraction.
+
+
+> abstraction means hiding the complex implementation details of a program, exposing only the API required to use the implementation. 
+> A Java program is also a great example of abstraction. Here java takes care of converting simple statements to machine language and hides the inner implementation details from the outer world.
+
+To acheive  abstraction :
+> abstract class (0-100%)
+> Interface (100%)
+
+Advantages of abstraction :
+> Security
+> Enhancement - For example if we are changing or upgrading software we have just way of implementing , set of rules remains same .
+> enhances loose coupling
+
+
+Abstract class :
+> It cannot be instantiated 
+> It must be extended to a class in order to use .
+
+
+Interface :
+
+> It is set of rules 
+> all variables are by default final and static
+> upto java 8 all methods were abstract in interface
+>  after java 8 we can define default method and static method in interface.
+
+
+
+
+Interface:
+
+A class can implement multiple interfaces
+An interface cannot provide any code at all
+An interface can only define public static final constants
+An interface cannot define instance variables
+Adding a new method has ripple effects on implementing classes (design maintenance)
+An interface cannot extends or implement an abstract class
+All interface methods are public
+In general, interfaces should be used to define contracts (what is to be achieved, not how to achieve it).
+
+Abstract Class:
+
+A class can extend at most one abstract class
+An abstract class can contain code
+An abstract class can define both static and instance constants (final)
+An abstract class can define instance variables
+Modification of existing abstract class code has ripple effects on extending classes (implementation maintenance)
+Adding a new method to an abstract class has no ripple effect on extending classes
+An abstract class can implement an interface
+Abstract classes can implement private and protected methods
+Abstract classes should be used for (partial) implementation. They can be a mean to restrain the way API contracts should be implemented.
+
+
+interface from java 8 :
+can have default method - which allows the implementation class to work normal even though we add this method to interface
+> we can override default method
+
+> Static methods are allowed from java 8 .
+>Its best to use only interface when we dont require objects , as we can run main method from interface

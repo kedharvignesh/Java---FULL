@@ -1,0 +1,18 @@
+The main idea behind this is the hiding of implementation details from users. 
+> In other words, Encapsulation is the wrapping up of data into a single unit in order to prevent access to it from the outside world.
+> Since the data is hidden from the other classes, this process is also known as Data-hiding.
+
+
+Encapsulation acheived by = Data hiding + abstraction .
+
+How Encapsulation work ?
+> By hiding all data members 
+> making methods accessble outside the class (usually with some validation ) - by convention getter and setter methods are used 
+
+
+The following are some of the Advantages of Encapsulation.
+
+
+> Ability to reuse or modify the code based on the requirements
+> Security == Limits the accessibility of data
+> Easiness in unit testing as the code is encapsulated
