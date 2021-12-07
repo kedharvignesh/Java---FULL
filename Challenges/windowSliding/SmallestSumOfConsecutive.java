@@ -1,5 +1,9 @@
 package windosSlidingTechnique;
 
+//Given an array of integers of size ‘n’.
+//Our aim is to calculate the smallest sum of ‘k’ 
+//consecutive elements in the array.
+
 public class SmallestSumOfConsecutive {
 
 	public static void main(String[] args) {
