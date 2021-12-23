@@ -1,0 +1,127 @@
+Collection = group of objects 
+collection frame work = it contains lot of classes and interfaces , (api's) used for collection . (to store and manipulate)
+
+why Collections framework ??
+> So to store and handle many number of variables Arrays was created .
+> But there are many drawbacks with array , mainly predetrmined memory  and difficult to do operations with Array .
+> To rectify these drawbacks Collections framework was introduced , to handle group of objects  and it contains lot of APIs with it .
+
+
+
+Array                                   Collection 
+
+> fixed size                          > Growable
+> its not used where memory           >  better in terms of memory
+      is preferred     
+> Performance is better               > comparitively low
+>can hold both primitive and          > can hold only objects  (primitive data  types will be automatically converted into wrapper class objects)
+            objects
+> readymade methods or api's          > lots of API Avilable , so easy to program
+   are not available
+    (no underlined datastructure)
+    increase programming complexity        
+            
+            
+IMportant   interfaces in Collection Framework :
+1. Collection
+2. List
+3. Set
+4. SortedSet
+5. NavigableSet
+6. Queue
+   > All the above interfaces are sub interfaces of collection , which is sub-interface of iterable ihterface .
+
+ > Note : Map is not a sub interface of collection interface . 
+7. Map
+8. SortedMap 
+9. NavigableMap
+
+
+2.List :
+LIST :
+> insertion order maintained .
+>  duplicates allowed
+
+2.1. ArrayList
+2.2  LinkedList
+
+2.3 Vector (Legacy class , not used now )
+   2.3.a Stack
+   
+   
+ArrayList vs Vector
+> both are similar in many aspect 
+> arrayList is not thread safe and synvhronized but vector is vice versa .
+   
+
+
+
+3 SET :
+>Duplicates not allowed
+
+
+> set interface has classes - hashset and linked hashset.
+
+>sorted set is sub interface of set and navigableSet is seub interface of sorted set and tree set is class of it.
+
+>HASHSET does not maintain insertion order.
+>linkedhashset maintains insertion order.
+> TreeEt maintains sorted order .
+
+HASHSET :
+> underlined algorithm - HashTable
+> values are stored based on the hash values , so order is not maintained .
+> null values can be stored only once .
+> ITS best for search operation , since it uses hash algorithm
+
+Hashset constructors ;
+> HashSet hs = new HashSet(); this will create set with initial capacity of 16 and fill ratio = 0.75 (after filling .75 new object will be created ) 
+> HashSet hs = new HashSet(initital capacity); 
+> HashSet hs = new HashSet(initial capacity , customized fill ratio(we can change from 0.75 to 0.9 for eg ) );
+> HashSet hs = new HashSet(Collection c);
+
+
+LINKEDHASHSET :
+>Child class of Hashset
+> Exactly same as Hashset in terms of constructors .
+> main difference is insertion ordeer is preserved here .
+> underlined data structure is hybrid - LinkedList + Hashtable
+>Its main scope is on creating cache memory
+
+
+5.Map :
+> Not a sub interface of Collection    ,  so Collections.  method are not applicable here 
+> each   key , value pair is called an entry in map , in this key cannot have duplicates but , values can have .
+
+
+
+> Hashmap
+> LinkedHashmap
+
+> WeakHashMap
+
+> IdenityHashMap
+
+> Hashtable
+> Dictionary
+> Properties
+
+
+Treemap :
+> UNderlined data strucure is red black tree
+
+
+
+Collection vs Collections
+Collection
+	> Interface
+	> add(), clear(), remove(), contains()  (implemented through sub interfaces , like List , Set etc. )
+	> Has static, default and abstract methods
+Collections
+	> Utility class
+	> addAll(), sort(), dejoint(), copy()
+	> Only static methods
+
+            
+
+

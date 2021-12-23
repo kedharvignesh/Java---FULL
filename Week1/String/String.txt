@@ -1,0 +1,7 @@
+>String is a class which belongs to java.lang package
+
+> only java.lang package need not be imoprted while comiping , all other packages needs to be imported
+
+> String is immutable :
+   > means value of the string cannot be changed with same reference , if we change the string value new object reference will be created old one will be garbage collected.
+   >String object have spl memory in heap memory called string pool

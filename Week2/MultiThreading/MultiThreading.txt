@@ -1,0 +1,24 @@
+1.INtroduction
+
+2.Ways to define a thread :
+> by extending thread class
+> by implementing runnable interface
+
+3.Getting and setting name of a thread
+
+4.Thread priorities
+
+5.Methods to prevent thread execution :
+> yield()
+>join()
+>slepp()
+
+6.Synchronization
+
+7.Interthread communication
+
+8.Deadlock
+
+9.Deamon threads
+
+10. Multithreading enhancements

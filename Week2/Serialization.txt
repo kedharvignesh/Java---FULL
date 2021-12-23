@@ -1,0 +1,3 @@
+Serilalization:
+> process of writing state of object into a file is called serialization
+> practical defentition - process of converting an object from java supported form into either file supported form or network supported form .
