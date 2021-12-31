@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 public class FilereadWrite {
 
-	static String file = "C:\\Users\\Admin\\eclipse-workspace\\FULL Contact Manager\\src\\contactManager\\Contacts.csv";
+	static String file = "Contacts.csv";
 
 	public static HashMap<String, Contact> load() {
 		BufferedReader reader = null;
@@ -69,9 +69,9 @@ public class FilereadWrite {
 		return loadNamesMap;
 	}
 
-	static public HashMap<Integer, String> loadNumber() {
+	static public HashMap<Long, String> loadNumber() {
 		BufferedReader reader = null;
-		HashMap<Integer, String> loadNumbersMap = new HashMap<Integer, String>();
+		HashMap<Long, String> loadNumbersMap = new HashMap<Long, String>();
 		try {
 			String line = "";
 			reader = new BufferedReader(new FileReader(file));
@@ -81,7 +81,7 @@ public class FilereadWrite {
 				String[] fields = line.split(",");
 
 				if (fields.length > 0) {
-					loadNumbersMap.put(Integer.parseInt(fields[1]), fields[3]);
+					loadNumbersMap.put(Long.parseLong(fields[1]), fields[3]);
 				}
 			}
 		} catch (Exception e) {

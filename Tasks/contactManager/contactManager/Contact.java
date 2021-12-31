@@ -1,16 +1,14 @@
 package contactManager;
 
-import java.util.UUID;
-
 public class Contact {
 
 	private String name;
-	private int phone;
+	private long phone;
 	private String mail;
 	private final String id;
 
 	// Constructors
-	public Contact(String name, int phone, String mail, String id) {
+	public Contact(String name, long phone, String mail, String id) {
 		this.name = name;
 		this.phone = phone;
 		this.mail = mail;
@@ -26,11 +24,11 @@ public class Contact {
 		this.name = name;
 	}
 
-	public int getPhone() {
+	public long getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 
