@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' />
-    <link rel="stylesheet" href="styles.css" />
+
     <title>DashBoard</title>
-</head>
+<script defer src="bundle.js"></script></head>
 
 <body>
     <header class="header">
@@ -16,14 +16,32 @@
         <nav class='nav'>
             <h1>Contacts</h1>
         </nav>
-        <input class="userInput" id="searchContact" type="text" placeholder="Search Contact" />
+        <input type="button" class="btn" id="btnCreateContact" value="Create Contact">
+        <div class="wrapper">
+            <div class="search-input" id="searchInputDiv">
+                <input class="userInput" id="searchContactInput" type="text" placeholder="Search Contact..." />
+                <div class="search-suggestion">
+
+                </div>
+            </div>
+        </div>
     </header>
 
     <main class="main">
-        <div class="add create">
+        <div class="contactListwrapper">
+            <header class="header headerCreate" id="allContacts">
+                <nav class='nav'>
+                    <h1 id="h1">All contacts</h1>
+                </nav>
+            </header>
+            <div class="contactList">
+
+            </div>
+        </div>
+        <div class="createContactDiv create">
             <header class="header headerCreate" id="newContactHeader">
                 <nav class='nav'>
-                    <h1>Create new contact</h1>
+                    <h1 id="h1">Create new contact</h1>
                 </nav>
             </header>
             <form class="formAdd" id='addForm'>
@@ -31,16 +49,16 @@
                     <tr>
                         <td>
                             <div class="contactDetails">
-                                <!-- <label class="contactLabel" for="firstName">First name
-                                            </label> -->
+                                <label class="contactLabel-display" for="firstName">First name
+                                </label>
                                 <input class="userInput" id="firstName" type="text" placeholder="First Name"
                                     required="required" />
                             </div>
                         </td>
                         <td>
                             <div class="contactDetails">
-                                <!-- <label class="contactLabel" for="lastName">Last name
-                                            </label> -->
+                                <label class="contactLabel-display" for="lastName">Last name
+                                </label>
                                 <input class="userInput" id="lastName" type="text" placeholder="Last Name" />
                             </div>
                         </td>
@@ -48,35 +66,17 @@
                     <tr>
                         <td>
                             <div class="contactDetails">
-                                <!-- <label class="contactLabel" for="email">Email address
-                                            </label> -->
+                                <label class="contactLabel-display" for="email">Email address
+                                </label>
                                 <input class="userInput" id="email" type="email" placeholder="Email address"
                                     required="required" />
                             </div>
                         </td>
                         <td>
                             <div class="contactDetails">
-                                <!-- <label class="contactLabel" for="phone">Phone number
-                                            </label> -->
+                                <label class="contactLabel-display" for="phone">Phone number
+                                </label>
                                 <input class="userInput" id="phone" type="number" placeholder="Phone number" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="contactDetails">
-                                <!-- <label class="contactLabel" for="userName">User name
-                                            </label> -->
-                                <input class="userInput" id="userName" type="text" placeholder="User Name"
-                                    required="required" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class=" contactDetails">
-                                <!-- <label class="contactLabel" for="password">Password
-                                            </label> -->
-                                <input class="userInput" id="password" type="password" placeholder="Password"
-                                    required="required" />
                             </div>
                         </td>
                     </tr>
@@ -102,17 +102,21 @@
                         </td>
                     </tr>
                 </table>
-                <div class="contactDetails"><button class="btn btn-create" id='btnCreate'>Create</button>
+                <div class="contactDetails" id="buttons"><button class="btn btn-create" id='btnCreate'>Create</button>
                 </div>
             </form>
         </div>
+        <div class="display-contact" id="displayContact">
+
+        </div>
+
     </main>
     <div class="footer">
         <p class="footer__copyright">
             &copy; Contacts
         </p>
     </div>
-    <script src="main.js"></script>
+
 
 </body>
 
