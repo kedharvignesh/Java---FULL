@@ -11,7 +11,7 @@ public class ContactApplication extends Thread {
 	Scanner scanner = new Scanner(System.in);
 	public HashMap<String, Contact> contactsMap = new HashMap<String, Contact>();
 	HashMap<String, ArrayList<String>> namesMap = new HashMap<String, ArrayList<String>>();
-	HashMap<Integer, String> numbersMap = new HashMap<Integer, String>();
+	HashMap<Long, String> numbersMap = new HashMap<Long, String>();
 	HashMap<String, String> emailsMap = new HashMap<String, String>();
 
 	@Override
@@ -167,7 +167,7 @@ public class ContactApplication extends Thread {
 	private void createContact() {
 		System.out.println(" Enter new  contact :\n\n");
 		String name = enterName();
-		int number = enterNumber();
+		long number = enterNumber();
 		String mail = enterEmail();
 		String id = UUID.randomUUID().toString();
 		contactsMap.put(id, new Contact(name, number, mail, id));
