@@ -5,7 +5,8 @@ import { onClickCreateButton, onKeyupFilterContact, loadcontactList, onClickSele
 
 
 
-let contactList = { list: loadcontactList() }
+
+const contactList = { list: loadcontactList() }
 
 
 
@@ -15,7 +16,7 @@ function init() {
     let searchInput = document.getElementById("searchContactInput");
     let createContactButon = document.getElementById("btnCreateContact");
     let applicationTitle = document.querySelector("h1");
-    contactList = loadcontactList();
+    contactList.list = loadcontactList();
     createButton.addEventListener("click", onClickCreateButton);
     searchInput.addEventListener("keyup", onKeyupFilterContact);
     createContactButon.addEventListener("click", onClickDisplayAddContact);
@@ -24,7 +25,7 @@ function init() {
     showContactList();
 }
 
-console.log(contactList);
+console.log(contactList.list);
 
 
 init();

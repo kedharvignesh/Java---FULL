@@ -62,7 +62,7 @@ function init() {
   var searchInput = document.getElementById("searchContactInput");
   var createContactButon = document.getElementById("btnCreateContact");
   var applicationTitle = document.querySelector("h1");
-  contactList = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.loadcontactList)();
+  contactList.list = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.loadcontactList)();
   createButton.addEventListener("click", _utils_js__WEBPACK_IMPORTED_MODULE_1__.onClickCreateButton);
   searchInput.addEventListener("keyup", _utils_js__WEBPACK_IMPORTED_MODULE_1__.onKeyupFilterContact);
   createContactButon.addEventListener("click", onClickDisplayAddContact);
@@ -70,7 +70,7 @@ function init() {
   showContactList();
 }
 
-console.log(contactList);
+console.log(contactList.list);
 init(); // display 
 
 function showContactList() {
@@ -183,7 +183,7 @@ function loadcontactList() {
   }
 
   if (getList === null || getList === undefined) {
-    _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList = [];
+    getList = [];
   }
 
   return getList;
@@ -192,22 +192,17 @@ function loadcontactList() {
 ; // event click create 
 
 function onClickCreateButton(e) {
-  e.preventDefault(); // gettingonClickCreateButton = loadcontactList(contactList);
-
+  e.preventDefault();
   var firstName = document.getElementById("firstName").value;
   var lastName = document.getElementById("lastName").value;
   var email = document.getElementById("email").value;
   var phone = document.getElementById("phone").value;
   var dateOfBirth = document.getElementById("dob").value;
-  var gender = document.getElementById("gender").value; // Input validations 
-  // email validation 
+  var gender = document.getElementById("gender").value;
 
   if (checkValidInputs(email, firstName, gender)) {
     var contact = new _Contact_js__WEBPACK_IMPORTED_MODULE_0__["default"](firstName, lastName, email, phone, dateOfBirth, gender);
     _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list.push(contact);
-    console.warn("added", {
-      contactList: _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList
-    });
     alert("New Contact Created");
     document.querySelector("form").reset();
     localStorage.setItem("contactList", JSON.stringify(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list));
@@ -223,7 +218,7 @@ function onKeyupFilterContact(e) {
   var searchInputDiv = document.getElementById("searchInputDiv");
   var suggBox = document.querySelector(".search-suggestion");
   var key = e.target.value.toLowerCase();
-  document.body.addEventListener("mouseup", closeSuggestionOnblur); // contactList = loadcontactList(contactList);
+  document.body.addEventListener("mouseup", closeSuggestionOnblur);
 
   if (key != "" && _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list != null) {
     suggBox.innerHTML = _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list.filter(function (contact) {
@@ -253,7 +248,7 @@ function onKeyupFilterContact(e) {
   } else if (key == "") {
     searchInputDiv.classList.remove("active");
     displayContactListWrapper.style.opacity = 1;
-    document.querySelector(".createContactDiv").style.opacity = 1; // searchInputDiv.addEventListener("focusout", () => searchInputDiv.classList.remove("active"));
+    document.querySelector(".createContactDiv").style.opacity = 1;
 
     try {
       document.querySelector("#editDiv").style.opacity = 1;
@@ -261,7 +256,6 @@ function onKeyupFilterContact(e) {
       error.message;
     }
   } else {
-    contactListItems.length = 0;
     document.querySelector(".createContactDiv").style.opacity = 1;
     displayContactListWrapper.style.opacity = 1;
   }
@@ -274,7 +268,6 @@ function onKeyupFilterContact(e) {
 }
 
 function onClickSelectContact(e) {
-  // contactList = loadcontactList(contactList);
   e.preventDefault();
   var currentContact;
   var displayContactListWrapper = document.querySelector(".contactListwrapper");
@@ -306,8 +299,7 @@ function onClickSelectContact(e) {
       _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list = _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list.filter(function (contact) {
         return contact != currentContact;
       });
-      console.log(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list); // contactList.setContactList(contactList);
-
+      console.log(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list);
       localStorage.setItem("contactList", JSON.stringify(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list));
       alert("contact deleted");
       refreshPage();
@@ -381,11 +373,7 @@ function onClickSelectContact(e) {
         localStorage.setItem("contactList", JSON.stringify(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list));
         var contact = new _Contact_js__WEBPACK_IMPORTED_MODULE_0__["default"](firstName, lastName, email, phone, dateOfBirth, gender);
         _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list.push(contact);
-        console.warn("added", {
-          contactList: _main_js__WEBPACK_IMPORTED_MODULE_1__.contactList
-        });
-        alert(" changes saved"); // contactList.setContactList(contactList);
-
+        alert(" changes saved");
         localStorage.setItem("contactList", JSON.stringify(_main_js__WEBPACK_IMPORTED_MODULE_1__.contactList.list));
         refreshPage();
       } else {

@@ -34,7 +34,7 @@ function loadcontactList() {
         console.log(e.message);
     }
     if (getList === null || getList === undefined) {
-        contactList = [];
+        getList = [];
     }
     return getList;
 };
@@ -47,7 +47,7 @@ function loadcontactList() {
 
 function onClickCreateButton(e) {
     e.preventDefault();
-    // gettingonClickCreateButton = loadcontactList(contactList);
+
 
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
@@ -57,18 +57,9 @@ function onClickCreateButton(e) {
     let gender = document.getElementById("gender").value;
 
 
-
-    // Input validations 
-
-    // email validation 
-
-
-
-
     if (checkValidInputs(email, firstName, gender)) {
         let contact = new Contact(firstName, lastName, email, phone, dateOfBirth, gender);
         contactList.list.push(contact);
-        console.warn("added", { contactList });
         alert("New Contact Created");
         document.querySelector("form").reset();
         localStorage.setItem("contactList", JSON.stringify(contactList.list));
@@ -82,6 +73,7 @@ function onClickCreateButton(e) {
 
 
 
+
 function onKeyupFilterContact(e) {
     e.preventDefault();
     let displayContactListWrapper = document.querySelector(".contactListwrapper");
@@ -90,7 +82,7 @@ function onKeyupFilterContact(e) {
     let key = e.target.value.toLowerCase();
     document.body.addEventListener("mouseup", closeSuggestionOnblur);
 
-    // contactList = loadcontactList(contactList);
+
 
 
     if (key != "" && contactList.list != null) {
@@ -129,14 +121,13 @@ function onKeyupFilterContact(e) {
         searchInputDiv.classList.remove("active");
         displayContactListWrapper.style.opacity = 1;
         document.querySelector(".createContactDiv").style.opacity = 1;
-        // searchInputDiv.addEventListener("focusout", () => searchInputDiv.classList.remove("active"));
+
         try {
             document.querySelector("#editDiv").style.opacity = 1;
         } catch (error) {
             error.message;
         }
     } else {
-        contactListItems.length = 0;
         document.querySelector(".createContactDiv").style.opacity = 1;
         displayContactListWrapper.style.opacity = 1;
 
@@ -155,7 +146,7 @@ function onKeyupFilterContact(e) {
 
 
 function onClickSelectContact(e) {
-    // contactList = loadcontactList(contactList);
+
 
     e.preventDefault();
     let currentContact;
@@ -189,7 +180,7 @@ function onClickSelectContact(e) {
         if (confirm("Are you sure to delete the contact ?")) {
             contactList.list = contactList.list.filter((contact) => contact != currentContact);
             console.log(contactList.list);
-            // contactList.setContactList(contactList);
+
             localStorage.setItem("contactList", JSON.stringify(contactList.list));
             alert("contact deleted");
             refreshPage();
@@ -295,11 +286,11 @@ function onClickSelectContact(e) {
 
                 let contact = new Contact(firstName, lastName, email, phone, dateOfBirth, gender);
                 contactList.list.push(contact);
-                console.warn("added", { contactList });
                 alert(" changes saved");
 
-                // contactList.setContactList(contactList);
+
                 localStorage.setItem("contactList", JSON.stringify(contactList.list));
+
                 refreshPage();
             } else {
                 alert("please fill required fields correctly")
