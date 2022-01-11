@@ -287,7 +287,14 @@ function onClickSelectContact(e) {
     }
   });
   displayContactDiv.classList.add("active");
-  document.querySelector(".createContactDiv").style.display = "none"; // delete button inside display
+  document.querySelector(".createContactDiv").style.display = "none";
+
+  try {
+    document.querySelector("#editDiv").style.display = "none";
+  } catch (error) {
+    error.message;
+  } // delete button inside display
+
 
   var deleteButton = document.getElementById("delete");
   deleteButton.addEventListener("click", onDeleteContact);

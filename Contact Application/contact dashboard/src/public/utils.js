@@ -167,6 +167,11 @@ function onClickSelectContact(e) {
     });
     displayContactDiv.classList.add("active");
     document.querySelector(".createContactDiv").style.display = "none";
+    try {
+        document.querySelector("#editDiv").style.display = "none";
+    } catch (error) {
+        error.message;
+    }
 
 
 
