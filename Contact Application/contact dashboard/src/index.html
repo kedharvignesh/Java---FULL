@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' />
+
+    <title>DashBoard</title>
+</head>
+
+<body>
+    <header class="header">
+
+        <nav class='nav'>
+            <h1>Contacts</h1>
+        </nav>
+        <input type="button" class="btn" id="btnCreateContact" value="Create Contact">
+        <div class="wrapper">
+            <div class="search-input" id="searchInputDiv">
+                <input class="userInput" id="searchContactInput" type="text" placeholder="Search Contact..." />
+                <div class="search-suggestion">
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="contactListwrapper">
+            <header class="header headerCreate" id="allContacts">
+                <nav class='nav'>
+                    <h1 id="h1">All contacts</h1>
+                </nav>
+            </header>
+            <div class="contactList">
+
+            </div>
+        </div>
+        <div class="createContactDiv create">
+            <header class="header headerCreate" id="newContactHeader">
+                <nav class='nav'>
+                    <h1 id="h1">Create new contact</h1>
+                </nav>
+            </header>
+            <form class="formAdd" id='addForm'>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="contactDetails">
+                                <label class="contactLabel-display" for="firstName">First name
+                                </label>
+                                <input class="userInput" id="firstName" type="text" placeholder="First Name"
+                                    required="required" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contactDetails">
+                                <label class="contactLabel-display" for="lastName">Last name
+                                </label>
+                                <input class="userInput" id="lastName" type="text" placeholder="Last Name" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="contactDetails">
+                                <label class="contactLabel-display" for="email">Email address
+                                </label>
+                                <input class="userInput" id="email" type="email" placeholder="Email address"
+                                    required="required" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contactDetails">
+                                <label class="contactLabel-display" for="phone">Phone number
+                                </label>
+                                <input class="userInput" id="phone" type="number" placeholder="Phone number" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="contactDetails cd">
+                                <label class="contactLabel" for="dob">Date of Birth
+                                </label>
+                                <input class="userInput op-input" id="dob" type="date" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contactDetails cd">
+                                <label class="contactLabel" for="gender">Gender
+                                </label>
+                                <select class="userInput op-input" name="gender" id="gender" required>
+                                    <option value="">--select one--</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="contactDetails" id="buttons"><button class="btn btn-create" id='btnCreate'>Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="display-contact" id="displayContact">
+
+        </div>
+
+    </main>
+    <div class="footer">
+        <p class="footer__copyright">
+            &copy; Contacts
+        </p>
+    </div>
+
+
+</body>
+
+</html>
