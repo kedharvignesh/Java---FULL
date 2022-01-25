@@ -24,14 +24,13 @@ public class CredentialController {
 		return credentialService.addNewContact(signup);
 	}
 
-
 	@PostMapping(path = "/login")
-	public String processLogin(@RequestBody Credential credential,ModelMap model) {
-		return credentialService.processLogin(credential,model);
+	public String processLogin(@RequestBody Credential credential, ModelMap model) {
+		return credentialService.processLogin(credential, model);
 	}
 
 	@GetMapping(path = "/logout")
 	public void processLogout(ModelMap model) {
-		credentialService.processLogout( model);
+		credentialService.processLogout(model);
 	}
 }

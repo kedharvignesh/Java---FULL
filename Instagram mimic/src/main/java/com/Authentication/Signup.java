@@ -1,31 +1,25 @@
 package com.Authentication;
 
 public class Signup {
-	private String id;
+
 	private String name;
 	private String email;
 	private String password;
 	private long createdAt;
 	private long editedAt;
-	
+	private String gender;
+
 	public Signup() {
 	}
 
-	public Signup(String id, String name, String email, String password, long createdAt, long editedAt) {
-		this.id = id;
+	public Signup(String name, String email, String password, long createdAt, long editedAt, String gender) {
+
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.createdAt = createdAt;
 		this.editedAt = editedAt;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		this.gender = gender;
 	}
 
 	public String getName() {
@@ -67,7 +61,13 @@ public class Signup {
 	public void setEditedAt(long editedAt) {
 		this.editedAt = editedAt;
 	}
-	
-	
-	
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 }

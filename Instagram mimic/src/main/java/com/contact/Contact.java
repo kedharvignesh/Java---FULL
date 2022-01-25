@@ -15,11 +15,12 @@ public class Contact {
 	private long createdAt;
 	private long editedAt;
 	private List<String> friendsList;
+	private String gender;
 
 	public Contact() {
 	}
 
-	public Contact(String id, String name, String email, long createdAt, long editedAt) {
+	public Contact(String id, String name, String email, long createdAt, long editedAt, String gender) {
 
 		this.id = id;
 		this.name = name;
@@ -27,6 +28,7 @@ public class Contact {
 		this.createdAt = createdAt;
 		this.editedAt = editedAt;
 		this.friendsList = new ArrayList<String>();
+		this.gender=gender;
 	}
 
 	public String getId() {
@@ -53,7 +55,6 @@ public class Contact {
 		this.email = email;
 	}
 
-
 	public long getCreatedAt() {
 		return createdAt;
 	}
@@ -78,13 +79,19 @@ public class Contact {
 		this.friendsList = friendsList;
 	}
 
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public String toString() {
 		return "Contact [id=" + id + ", name=" + name + ", email=" + email + ", createdAt=" + createdAt + ", editedAt="
 				+ editedAt + ", friendsList=" + friendsList + "]";
 	}
-	
-	
-
 
 }

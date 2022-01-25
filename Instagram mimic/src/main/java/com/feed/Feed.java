@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -22,7 +21,7 @@ public class Feed {
 	public Feed() {
 	}
 
-	public Feed(String id, String creatorId, String content, long createdAt, long editedAt) {
+	public Feed( String id , String creatorId, String content, long createdAt, long editedAt) {
 		this.id = id;
 		this.creatorId = creatorId;
 		this.content = content;

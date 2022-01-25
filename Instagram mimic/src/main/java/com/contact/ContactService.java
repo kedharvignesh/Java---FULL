@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.Authentication.Credential;
+import com.feed.Comment;
+import com.feed.Feed;
 
 @Service
 public class ContactService {
@@ -18,9 +20,19 @@ public class ContactService {
 	}
 
 	public void deleteContact(String id) {
-		String email = ofy().load().type(Contact.class).id(id).now().getEmail();
+		Contact contact = ofy().load().type(Contact.class).id(id).now();
+		String email = contact.getEmail();
+		List<Feed> feedList = ofy().load().type(Feed.class).filter("creatorId", contact.getId()).list();
+
 		ofy().delete().type(Contact.class).id(id).now();
 		ofy().delete().type(Credential.class).id(email).now();
+
+		for (Feed feed : feedList) {
+			for (String commentId : feed.getCommentId()) {
+				ofy().delete().type(Comment.class).id(commentId).now();
+			}
+			ofy().delete().type(Feed.class).id(feed.getId()).now();
+		}
 
 	}
 
@@ -33,7 +45,7 @@ public class ContactService {
 				String password = ofy().load().type(Credential.class).id(currentMail).now().getPassword();
 
 				ofy().delete().type(Credential.class).id(currentMail).now();
-				ofy().delete().type(Contact.class).id(contact.getId()).now();
+//				ofy().delete().type(Contact.class).id(contact.getId()).now();
 
 				ofy().save().entity(contact).now();
 				Credential credential = new Credential(contact.getEmail(), password, contact.getId());
@@ -42,7 +54,7 @@ public class ContactService {
 				return "changes in email stored";
 			} else if (ofy().load().type(Credential.class).id(contact.getEmail()).now().getEmail() != null && contact
 					.getId().equals(ofy().load().type(Credential.class).id(contact.getEmail()).now().getContactId())) {
-				ofy().delete().type(Contact.class).id(contact.getId()).now();
+//				ofy().delete().type(Contact.class).id(contact.getId()).now();
 				ofy().save().entity(contact).now();
 				return " saved changes ";
 			} else {
@@ -54,19 +66,29 @@ public class ContactService {
 		}
 	}
 
-	public List<String> getFriends(String id) {
-		return ofy().load().type(Contact.class).id(id).now().getFriendsList();
+	public ArrayList<Contact> getFriends(String id) {
+		List<String> idList = ofy().load().type(Contact.class).id(id).now().getFriendsList();
+		ArrayList<Contact> contactList = new ArrayList<Contact>();
+		for (String contactId : idList) {
+			contactList.add(ofy().load().type(Contact.class).id(contactId).now());
+		}
+		return contactList;
 	}
 
-	public List<String> getMutualFriends(String id , ModelMap model) {
+	public List<Contact> getMutualFriends(String id, ModelMap model) {
 		String contactId = (String) model.getAttribute("contactId");
 		List<String> myList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
 		List<String> friendContacts = ofy().load().type(Contact.class).id(id).now().getFriendsList();
 		myList.retainAll(friendContacts);
-		return myList;
+		List<Contact> contactList = new ArrayList<Contact>();
+		for (String contact : myList) {
+			contactList.add(ofy().load().type(Contact.class).id(contact).now());
+		}
+		return contactList;
 	}
-	
-	
-	
+
+	public void addFriend(String id) {
+		
+	}
 
 }

@@ -2,8 +2,10 @@ package com.Authentication;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
- import org.springframework.ui.ModelMap;
+import org.springframework.ui.ModelMap;
 
 import com.contact.Contact;
 
@@ -11,37 +13,37 @@ import com.contact.Contact;
 public class CredentialService {
 
 	public String addNewContact(Signup signup) {
-		
+
 		try {
 			if (ofy().load().type(Credential.class).id(signup.getEmail()).now() == null) {
-				Credential credential = new Credential(signup.getEmail(), signup.getPassword(), signup.getId());
+				String id = UUID.randomUUID().toString();
+				Credential credential = new Credential(signup.getEmail(), signup.getPassword(), id);
 				ofy().save().entity(credential).now();
-				addContact(signup);
+				addContact(signup, id);
 				return "success";
 			} else {
-				return "existing user";
+				
+				return "existing Email";
 			}
 
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-
 
 	}
 
-	public String addContact(Signup signup) {
+	public String addContact(Signup signup, String id) {
 		try {
-			if (ofy().load().type(Contact.class).id(signup.getId()).now() == null) {
-				Contact contact = new Contact(signup.getId(), signup.getName(), signup.getEmail(), signup.getCreatedAt(), signup.getEditedAt());
-				ofy().save().entity(contact).now();
-				return "success";
-			}
+
+			Contact contact = new Contact(id, signup.getName(), signup.getEmail(), signup.getCreatedAt(),
+					signup.getEditedAt(),signup.getGender());
+			ofy().save().entity(contact).now();
+			return "success";
 
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-		return "invalid sign up ";
-	}	
+	}
 
 	public String processLogin(Credential credential, ModelMap model) {
 		String contactId = "";
@@ -51,15 +53,15 @@ public class CredentialService {
 			String reqPassword = reqCredential.getPassword();
 			if (contactId != null && reqPassword == credential.getPassword()) {
 				loadSession(contactId, model);
-				return contactId;
+				return "login success";
+			} else {
+				return "password does not match";
 			}
 
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-		return contactId;
 	}
-
 
 	private void loadSession(String contactId, ModelMap model) {
 		model.addAttribute("contactId", contactId);
@@ -68,7 +70,5 @@ public class CredentialService {
 	public void processLogout(ModelMap model) {
 		model.remove("contactId");
 	}
-
-
 
 }
