@@ -254,10 +254,17 @@ body{
 }
 #signUpForm input[type="submit"]{
     position: relative;
-    left: 210px;
+    left: 145px;
 }
+/* #loginForm input[type="submit"]{
+    /* position: relative;
+    left: 60px; */
 
 .errorLabel-display{
     opacity: 0;
     color: lightcoral;
+}
+#cancelSignUp {
+    position: relative;
+    left: 145px;
 }

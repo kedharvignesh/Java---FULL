@@ -1,15 +1,21 @@
 package com.Authentication;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@SessionAttributes("contactID")
+@SessionAttributes({ "contactId" })
 public class CredentialController {
 
 	private CredentialService credentialService;
@@ -24,13 +30,45 @@ public class CredentialController {
 		return credentialService.addNewContact(signup);
 	}
 
+	@ModelAttribute("contactId")
+	public String contactId() {
+		return null;
+	}
+
 	@PostMapping(path = "/login")
-	public String processLogin(@RequestBody Credential credential, ModelMap model) {
-		return credentialService.processLogin(credential, model);
+	public String processLogin(@RequestBody Login login, HttpSession session) {
+		return credentialService.processLogin(login, session);
 	}
 
 	@GetMapping(path = "/logout")
-	public void processLogout(ModelMap model) {
-		credentialService.processLogout(model);
+	public String processLogout(HttpSession session) {
+		return credentialService.processLogout(session);
+//		ModelAndView modelAndView = new ModelAndView();
+//		modelAndView.setViewName("index.html");
+//		return modelAndView;	
 	}
+
+	@GetMapping(path = "/app")
+	public ModelAndView app(HttpSession session) {
+		try {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("app.html");
+		if (!session.getAttribute("contactId").equals(null))
+			return modelAndView;
+		else {
+			modelAndView.setViewName("index.html");
+			return modelAndView;
+		}
+		}catch (Exception e) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("index.html");
+			return modelAndView;	
+		}
+	}
+	
+	@GetMapping(path = "/getId")
+		public String getId(HttpSession session) {
+		return (String) session.getAttribute("contactId");
+	}
+
 }

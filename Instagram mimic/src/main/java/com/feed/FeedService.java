@@ -7,8 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+
+import com.contact.Contact;
 
 @Service
 public class FeedService {
@@ -48,8 +52,20 @@ public class FeedService {
 
 	}
 
-	public List<Feed> getallFeed() {
-		return ofy().load().type(Feed.class).list();
+	public List<Feed> getallFeed(HttpSession session) {
+		String contactId = (String) session.getAttribute("contactId");
+		List<String> friendList;  
+		try {
+		friendList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
+		}catch (Exception e) {
+			friendList = new ArrayList<String>(); 
+		}
+		List<Feed> feedList = ofy().load().type(Feed.class).filter("creatorId", contactId).list();
+		
+		for(String friendId : friendList) {
+		feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", friendId).list());	
+		}
+		return feedList;
 	}
 
 	public List<Feed> getUsersFeed(String id) {

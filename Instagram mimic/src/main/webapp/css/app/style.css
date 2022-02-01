@@ -1,0 +1,182 @@
+html{
+    max-height: 100%;
+    overflow-x: hidden;
+}
+body {
+    --nav-width: 200px;
+    margin: 0 0 0 var(--nav-width);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    height: 100%;
+}
+
+.navBlack {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--nav-width);
+    height: 100vh;
+    background: #222222;
+} 
+
+ .navBlack a {
+    color: lightgoldenrodyellow;
+    font-size: 20px;
+} 
+
+ .nav-linkBlack:hover {
+    background: rgba(249, 255, 254, 0.966);
+} 
+#homeBtn{
+    margin-top: 100px;
+}
+
+#logoutBtn{
+ margin-top: 300px;
+}
+
+ #app {
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.wrapper{
+    max-width: 450px;
+     margin-top: 10px;
+    /* position: relative; */
+      /* z-index: 100;  */      
+      margin-bottom: 30px;
+   } 
+  
+  .wrapper .search-input{
+    background: rgb(250, 208, 208);
+    width: 25%;
+    border-radius: 5px;
+    position: absolute;
+    /* z-index: 100 !important; */
+    left: 440px; 
+    box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+  }
+  
+  .search-input input{
+    height: 40px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+    color: #777;
+    background-color: rgb(249, 249, 255);
+  }
+  
+  .search-input.active input{
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .search-input .search-suggestion{
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  
+  .search-input.active .search-suggestion{
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .search-suggestion li{
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+    color: #777;
+  }
+  
+  .search-input.active .search-suggestion li{
+    display: block;
+  }
+  .search-suggestion li:hover{
+    background: #efefef;
+  }
+  
+#feed{
+    margin-top: 40px !important;
+    overflow-y: auto;
+}
+
+  .date {
+    font-size: 11px
+}
+
+.comment-text {
+    font-size: 12px
+}
+
+.fs-12 {
+    font-size: 12px
+}
+
+.shadow-none {
+    box-shadow: none
+}
+
+.name {
+    color: #007bff
+}
+
+.cursor:hover {
+    color: blue
+}
+
+.cursor {
+    cursor: pointer
+}
+
+.textarea {
+    resize: none
+}
+
+.fa-facebook {
+    color: #3b5999
+}
+
+.fa-twitter {
+    color: #55acee
+}
+
+.fa-linkedin {
+    color: #0077B5
+}
+
+.fa-instagram {
+    color: #e4405f
+}
+
+.fa-dribbble {
+    color: #ea4c89
+}
+
+.fa-pinterest {
+    color: #bd081c
+}
+
+.fa {
+    cursor: pointer
+}
+
+ul{
+    list-style: none;   
+}
+
+
+
+#addFeed{
+    margin-bottom: 40px;
+}

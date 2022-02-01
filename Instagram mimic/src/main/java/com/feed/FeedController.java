@@ -3,6 +3,8 @@ package com.feed;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @RestController
-@SessionAttributes("contactID")
+@SessionAttributes({"contactId"})
 @RequestMapping(path = "api/v1/feeds")
 public class FeedController {
 
@@ -48,8 +50,8 @@ public class FeedController {
 	}
 
 	@GetMapping(path = "/home")
-	public List<Feed> getAllfeed() {
-		return feedService.getallFeed();
+	public List<Feed> getAllfeed(HttpSession session) {
+		return feedService.getallFeed(session);
 	}
 
 	@GetMapping(path = "/{feedId}")

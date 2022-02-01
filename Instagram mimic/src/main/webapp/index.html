@@ -23,12 +23,8 @@
             <nav class="head-section__nav">
 
                 <ul class="navbar">
-                    <!-- <li><a href="javascript:void(0)" class="navbar__list-item">Home</a></li>
-                    <li><a href="javascript:void(0)" class="navbar__list-item">Products</a></li>
-                    <li><a href="javascript:void(0)" class="navbar__list-item">Demo</a></li>
-                    <li><a href="javascript:void(0)" class="navbar__list-item">Resources</a></li> -->
-                    <li><a href="javascript:void(0)" class="navbar__list-item">Sign In</a></li>
-                    <li><a href="javascript:void(0)" class="button">Sign Up</a></li>
+                    <li><a href="javascript:void(0)" id="navSignin" class="navbar__list-item">Sign In</a></li>
+                    <li><a href="javascript:void(0)" id="navSignup"" class=" button">Sign Up</a></li>
                 </ul>
             </nav>
 
@@ -42,17 +38,20 @@
                 Get connected with people.
             </h1>
             <form id="welcomeBtn">
-                <!-- <input type="email" placeholder="Enter your work email" /> -->
                 <input type="button" id="signInWelcome" value="Sign In" />
                 <br><br>OR<br><br>
                 <input type="button" id="signUpWelcome" value="Sign Up" />
             </form>
             <form id="loginForm">
-                <input type="email" placeholder="Enter your Email address" />
-                <br><br>
-                <input type="password" placeholder="Enter your password" />
-                <br><br>
+                <label class="errorLabel-display" id="emailErrorLogin" for="emailLogin">Invalid Email
+                </label>
+                <input type="email" id="emailLogin" placeholder="Enter your Email address" />
+                <label class="errorLabel-display" id="passwordErrorLogin" for="passwordLogin">Enter password
+                </label>
+                <input type="password" id="passwordLogin" placeholder="Enter your password" />
+                <br><br><br>
                 <input type="submit" value="Sign In" />
+                <input type="button" id="cancelSignin" value="cancel" />
             </form>
             <form id='signUpForm'>
                 <table>
@@ -75,7 +74,7 @@
                     <tr>
                         <td>
                             <!-- <div class="signUpDetails"> -->
-                            <label class="errorLabel-display" id="passwordError" for="password">Invalid password
+                            <label class="errorLabel-display" id="passwordError" for="password">password cannot be empty
                             </label>
                             <input class="userInput" id="password" type="password" placeholder="Enter a password" />
                             <!-- </div> -->
@@ -97,6 +96,7 @@
                 <!-- <div class="signUpDetails"> -->
                 <br><br>
                 <input type="submit" value="Sign Up" />
+                <input type="button" id="cancelSignUp" value="cancel" />
                 <!-- </div> -->
             </form>
         </div>

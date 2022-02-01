@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/app/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="nav flex-column navBlack">
+        <a class="nav-link  nav-linkBlack" id="homeBtn" href="#">Home</a>
+        <a class="nav-link nav-linkBlack" href="#">My feed </a>
+        <a class="nav-link nav-linkBlack" href="#">My profile</a>
+        <a class="nav-link nav-linkBlack" id="logoutBtn" href="#">Logout</a>
+    </nav>
+
+    <div class="row">
+        <div class="wrapper col-md-12">
+            <div class="search-input" id="searchInputDiv">
+                <input class="userInput" id="searchContactInput" type="text" placeholder="Find People..." />
+                <div class="search-suggestion">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <hr class="divider">
+
+    <!-- <div id="app"></div> -->
+    <div class="row">
+        <div class="container mt-5 col-md-8" id="feed">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-8">
+                    <div class="d-flex flex-column comment-section" id="myGroup">
+                        <ul id="feedUl">
+                            <li>
+                                <div class="card gedf-card" id="addFeed">
+                                    <div class="card-header">
+                                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="posts-tab" data-toggle="tab"
+                                                    href="#posts" role="tab" aria-controls="posts"
+                                                    aria-selected="true">Write post</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab"
+                                                    aria-controls="images" aria-selected="false"
+                                                    href="#images">Images</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="posts" role="tabpanel"
+                                                aria-labelledby="posts-tab">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="message">post</label>
+                                                    <textarea class="form-control" id="message" rows="3"
+                                                        placeholder="What are you thinking?"></textarea>
+                                                </div>
+
+                                            </div>
+                                            <div class="tab-pane fade" id="images" role="tabpanel"
+                                                aria-labelledby="images-tab">
+                                                <div class="form-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                        <label class="custom-file-label" for="customFile">Upload
+                                                            image</label>
+                                                    </div>
+                                                </div>
+                                                <div class="py-4"></div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-toolbar justify-content-between">
+                                            <div class="btn-group">
+                                                <button type="submit" id="feedSubmit"
+                                                    class="btn btn-primary">share</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <hr class="divider">
+                            <li>
+                                <div class="bg-white p-2">
+
+                                    <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                            src="https://www.cricbuzz.com/a/img/v1/152x152/i1/c171004/sachin-tendulkar.jpg"
+                                            width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                                class="d-block font-weight-bold name">Sachin Tendulkar</span><span
+                                                class="date text-black-50">Shared time - Jan 2022</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                            sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                            veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-2">
+                                    <div class="d-flex flex-row fs-12">
+                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span
+                                                class="ml-1">Like</span>
+                                        </div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-1" href="#collapse-1"><i
+                                                class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                        <div class="like p-2 cursor action-collapse"><i class="fa fa-share"></i><span
+                                                class="ml-1">Edit</span></div>
+                                        <div class="like p-2 cursor action-collapse"><i class="fa fa-share"></i><span
+                                                class="ml-1">Delete</span></div>
+                                    </div>
+                                </div>
+                                <div id="collapse-1" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                            src="https://www.cricbuzz.com/a/img/v1/152x152/i1/c171004/sachin-tendulkar.jpg"
+                                            width="40"><textarea
+                                            class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>
+                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none"
+                                            type="button">Post comment</button><button
+                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none"
+                                            type="button">Cancel</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                            </li>
+                            <li>
+                                <div class="bg-white p-2">
+
+                                    <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                            src="https://static01.nyt.com/images/2021/11/17/multimedia/17tennis-federer2/17tennis-federer2-mediumSquareAt3X.jpg"
+                                            width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                                class="d-block font-weight-bold name">Roger Federer</span><span
+                                                class="date text-black-50">Shared time - Jan 2022</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                            sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                            veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-2">
+                                    <div class="d-flex flex-row fs-12">
+                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span
+                                                class="ml-1">Like</span>
+                                        </div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-3" href="#collapse-3"><i
+                                                class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
+                                                class="fa fa-share"></i><span class="ml-1">Edit</span></div>
+                                    </div>
+                                </div>
+                                <div id="collapse-3" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                            src="https://static01.nyt.com/images/2021/11/17/multimedia/17tennis-federer2/17tennis-federer2-mediumSquareAt3X.jpg"
+                                            width="40"><textarea
+                                            class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>
+                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none"
+                                            type="button">Post comment</button><button
+                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none"
+                                            type="button">Cancel</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                            </li>
+                            <li>
+                                <div class="bg-white p-2">
+
+                                    <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                            width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                                class="d-block font-weight-bold name">MS Dhoni</span><span
+                                                class="date text-black-50">Shared time - Jan 2022</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                            sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                            veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-2">
+                                    <div class="d-flex flex-row fs-12">
+                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span
+                                                class="ml-1">Like</span>
+                                        </div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
+                                                class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
+                                                class="fa fa-share"></i><span class="ml-1">Edit</span></div>
+                                    </div>
+                                </div>
+                                <div id="collapse-4" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                            width="40"><textarea
+                                            class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>
+                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none"
+                                            type="button">Post comment</button><button
+                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none"
+                                            type="button">Cancel</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                            </li>
+                            <li>
+                                <div class="bg-white p-2">
+
+                                    <div class="d-flex flex-row user-info"><img class="rounded-circle"
+                                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                            width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                                class="d-block font-weight-bold name">Yuvraj Singh</span><span
+                                                class="date text-black-50">Shared time - Jan 2022</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                            sed do
+                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                            veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-2">
+                                    <div class="d-flex flex-row fs-12">
+                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span
+                                                class="ml-1">Like</span>
+                                        </div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-5" href="#collapse-5"><i
+                                                class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
+                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
+                                                class="fa fa-share"></i><span class="ml-1">Edit</span></div>
+                                    </div>
+                                </div>
+                                <div id="collapse-5" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                            width="40"><textarea
+                                            class="form-control ml-1 shadow-none textarea"></textarea>
+                                    </div>
+                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none"
+                                            type="button">Post comment</button><button
+                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none"
+                                            type="button">Cancel</button>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="./js/app/app.js"></script>
+
+</body>
+
+</html>

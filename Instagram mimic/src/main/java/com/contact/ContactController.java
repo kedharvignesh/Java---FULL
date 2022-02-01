@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @RestController
-@SessionAttributes("contactID")
+@SessionAttributes({"contactId"})
 @RequestMapping(path = "api/v1/contact")
 public class ContactController {
 

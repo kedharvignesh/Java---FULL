@@ -4,8 +4,12 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 
 import com.contact.Contact;
 
@@ -22,7 +26,7 @@ public class CredentialService {
 				addContact(signup, id);
 				return "success";
 			} else {
-				
+
 				return "existing Email";
 			}
 
@@ -36,7 +40,7 @@ public class CredentialService {
 		try {
 
 			Contact contact = new Contact(id, signup.getName(), signup.getEmail(), signup.getCreatedAt(),
-					signup.getEditedAt(),signup.getGender());
+					signup.getEditedAt(), signup.getGender());
 			ofy().save().entity(contact).now();
 			return "success";
 
@@ -45,30 +49,40 @@ public class CredentialService {
 		}
 	}
 
-	public String processLogin(Credential credential, ModelMap model) {
-		String contactId = "";
+	public String processLogin(Login login, HttpSession session) {
+
 		try {
-			Credential reqCredential = ofy().load().type(Credential.class).id(credential.getEmail()).now();
+			String contactId = "";
+			Credential reqCredential = ofy().load().type(Credential.class).id(login.getEmail()).now();
 			contactId = reqCredential.getContactId();
 			String reqPassword = reqCredential.getPassword();
-			if (contactId != null && reqPassword == credential.getPassword()) {
-				loadSession(contactId, model);
-				return "login success";
+			if (reqPassword.equals(login.getPassword())) {
+				loadSession(contactId, session);
+				return "welcome";
 			} else {
-				return "password does not match";
+				return "Invalid Email or password";
 			}
 
 		} catch (Exception e) {
-			return e.getMessage();
+			return "mail not found";
 		}
 	}
 
-	private void loadSession(String contactId, ModelMap model) {
-		model.addAttribute("contactId", contactId);
+	private void loadSession(String contactId, HttpSession session) {
+		session.setAttribute("contactId", contactId);
+//		model.put("contactId", contactId);
 	}
 
-	public void processLogout(ModelMap model) {
-		model.remove("contactId");
+	public String processLogout( HttpSession session) {
+//		model.clear();
+//		model.remove("contactId");
+//		status.setComplete();
+//		request.removeAttribute("contactId", WebRequest.SCOPE_SESSION);
+//		if (model.isEmpty()) {
+		session.invalidate();
+			return "done";
+//		}
+//		return "notDone";
 	}
 
 }
