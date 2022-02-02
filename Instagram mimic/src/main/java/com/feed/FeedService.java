@@ -10,15 +10,13 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
 import com.contact.Contact;
 
 @Service
 public class FeedService {
 
-	public List<Feed> getMyFeeds(ModelMap model) {
-		String contactId = (String) model.getAttribute("contactID");
+	public List<Feed> getMyFeeds(HttpSession session) {
+		String contactId = (String) session.getAttribute("contactId");
 //		String contactId = "zzzzzzzzzfllvm";
 		return ofy().load().type(Feed.class).filter("creatorId", contactId).list();
 
@@ -127,12 +125,21 @@ public class FeedService {
 
 	}
 
-	public void addCheer(String id) {
+	public String addCheer(String id) {
 		Feed feed = ofy().load().type(Feed.class).id(id).now();
 		Set<String> cheerList = new HashSet<String>();
+		try {
+		cheerList.addAll(feed.getCheersContactId());
+		}catch (Exception e) {
+		}
+		if(!cheerList.contains(feed.getCreatorId())) {
 		cheerList.add(feed.getCreatorId());
+		}else {
+			cheerList.remove(feed.getCreatorId());		
+		}
 		feed.setCheersContactId(cheerList);
 		ofy().save().entity(feed).now();
+		return "added like";
 	}
 
 	public Set<String> getCheers(String id) {

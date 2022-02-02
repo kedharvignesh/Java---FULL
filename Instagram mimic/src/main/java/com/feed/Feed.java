@@ -11,22 +11,24 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class Feed {
 	@Id private String id;
-	@Index private String creatorId;
+	@Index private String creatorId;	
 	private String content;
 	private long createdAt;
 	private long editedAt;
+	private String creatorName;
 	private Set<String> cheersContactId;
 	private List<String> commentId;
 
 	public Feed() {
 	}
 
-	public Feed( String id , String creatorId, String content, long createdAt, long editedAt) {
+	public Feed( String id , String creatorId, String content, long createdAt, long editedAt, String creatorName) {
 		this.id = id;
 		this.creatorId = creatorId;
 		this.content = content;
 		this.createdAt = createdAt;
 		this.editedAt = editedAt;
+		this.creatorName = creatorName;
 		this.cheersContactId = new HashSet<String>();
 		this.commentId = new ArrayList<String>();
 	}
@@ -85,6 +87,16 @@ public class Feed {
 
 	public void setCommentId(List<String> commentId) {
 		this.commentId = commentId;
+	}
+	
+	
+
+	public String getCreatorName() {
+		return creatorName;
+	}
+
+	public void setCreatorName(String creatorName) {
+		this.creatorName = creatorName;
 	}
 
 	@Override

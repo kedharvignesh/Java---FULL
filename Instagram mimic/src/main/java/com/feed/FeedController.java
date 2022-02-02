@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +29,8 @@ public class FeedController {
 	}
 
 	@GetMapping(path = "/my")
-	public List<Feed> getMyfeeds(ModelMap model) {
-		return feedService.getMyFeeds(model);
+	public List<Feed> getMyfeeds(HttpSession session) {
+		return feedService.getMyFeeds(session);
 	}
 
 	@PostMapping(path = "/my")
@@ -79,12 +78,12 @@ public class FeedController {
 		feedService.deleteComment(id);
 	}
 
-	@PostMapping(path = "/{feedId}/cheer")
-	public void addCheer(@PathVariable("feedId") String id) {
-		feedService.addCheer(id);
+	@GetMapping(path = "/{feedId}/cheer")
+	public String addCheer(@PathVariable("feedId") String id) {
+		return feedService.addCheer(id);
 	}
 
-	@GetMapping(path = "/{feedId}/cheer")
+	@GetMapping(path = "/{feedId}/cheers")
 	public Set<String> getCheers(@PathVariable("feedId") String id) {
 		return feedService.getCheers(id);
 	}

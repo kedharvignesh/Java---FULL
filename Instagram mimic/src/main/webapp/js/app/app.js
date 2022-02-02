@@ -2,7 +2,10 @@ class Model {
     constructor() {
         // this.feeds = this.getFeeds() || [];
         this.getContactId();
+        this.getContactName();
         this.getFeeds();
+
+
     }
 
     bindFeedListChanged(callback) {
@@ -31,8 +34,9 @@ class Model {
 
     }
 
-    async getFeeds() {
-        const url = "/api/v1/feeds/home";
+    async getContactName() {
+        let contactName;
+        const url = "/getName";
         try {
             const response = await fetch(url, {
                 method: "GET",
@@ -43,13 +47,37 @@ class Model {
             });
 
             console.log(response);
-            this.feedList = await response.json();
-            console.log(feedList);
+            contactName = await response.text();
+            console.log(contactName);
+            this.creatorName = contactName;
+        } catch (e) {
+            console.error(e);
+        }
 
+    }
+
+    async getFeeds() {
+        const url = "/api/v1/feeds/my";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+                mode: "cors"
+            });
+
+            console.log(response);
+            const feeds = await response.json();
+            this.feedList = feeds;
+            console.log(this.feedList);
+            return feeds;
         } catch (e) {
             console.error(e);
             this.feedList = [];
+            return this.feedList;
         }
+
     }
 
 
@@ -58,6 +86,7 @@ class Model {
         if (feed != null) {
             try {
                 feed.creatorId = this.creatorId;
+                feed.creatorName = this.creatorName;
             } catch (e) {
                 console.error(e);
             }
@@ -103,6 +132,23 @@ class Model {
             console.error(e);
         }
     }
+
+    async saveLike(feedId) {
+        const url = "/api/v1/feeds/" + feedId + "/cheer";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            const message = await response.text();
+            console.log(message);
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
 
 
@@ -127,7 +173,10 @@ class View {
         return element
     }
 
-    displayFeed(feedList) {
+    async displayFeed(handler) {
+        const feedList = await handler();
+        console.log(feedList);
+        this.feedList = feedList;
         const feedUl = document.querySelector("#feedUl");
         if (feedList.length === 0) {
             const h2 = this.createElement("h2");
@@ -135,8 +184,14 @@ class View {
             feedUl.append(h2);
         } else {
             feedList.forEach(feed => {
-
-
+                let liked = "";
+                try {
+                    if ((feed.cheersContactId).includes(feed.creatorId)) {
+                        liked = "active";
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
                 const li = this.createElement("li");
 
                 li.innerHTML = `<div class="bg-white p-2">
@@ -145,8 +200,8 @@ class View {
                                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                             width="40">
                                         <div class="d-flex flex-column justify-content-start ml-2"><span
-                                                class="d-block font-weight-bold name">Ranga</span><span
-                                                class="date text-black-50">Shared time - Jan 2022</span></div>
+                                                class="d-block font-weight-bold name">${feed.creatorName}</span><span
+                                                class="date text-black-50">${feed.createdAt}</span></div>
                                     </div>
                                     <div class="mt-2">
                                         <p class="comment-text">${feed.content}
@@ -155,18 +210,20 @@ class View {
                                 </div>
                                 <div class="bg-white p-2">
                                     <div class="d-flex flex-row fs-12">
-                                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i><span
-                                                class="ml-1">Like</span>
+                                        <div class="like p-2 cursor " ><i class="fa fa-thumbs-o-up " ></i><span
+                                                class="ml-1 cheer ${liked}" data-feedid=${feed.id}>Like</span>
                                         </div>
                                         <div class="like p-2 cursor action-collapse" data-toggle="collapse"
-                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
+                                            aria-expanded="true" aria-controls="collapse-${feed.id}" href="#collapse-${feed.id}"><i
                                                 class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
                                         <div class="like p-2 cursor action-collapse" data-toggle="collapse"
                                             aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
                                                 class="fa fa-share"></i><span class="ml-1">Edit</span></div>
+                                                <div class="like p-2 cursor action-collapse"><i class="fa fa-share"></i><span
+                                                class="ml-1">Delete</span></div>
                                     </div>
                                 </div>
-                                <div id="collapse-4" class="bg-light p-2 collapse" data-parent="#myGroup">
+                                <div id="collapse-${feed.id}" class="bg-light p-2 collapse" data-parent="#myGroup">
                                     <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
                                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                             width="40"><textarea
@@ -179,8 +236,11 @@ class View {
                                     </div>
                                 </div>
                                 <hr class="divider">`
+
+                feedUl.append(li);
             });
-            feedUl.append(li);
+
+
         }
     }
 
@@ -214,7 +274,33 @@ class View {
 
     }
 
+    async onClickToggleLike(handler, handler2) {
+        console.log(handler);
+        let feedId;
+        try {
+            let likes = await handler2();
+            likes = document.querySelectorAll(".cheer");
+            console.log(likes);
+            Array.from(likes).forEach((elem) => {
+                elem.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (elem.classList.contains("active")) {
+                        elem.classList.remove("active");
+                    } else {
+                        elem.classList.add("active");
+                    }
 
+                    feedId = elem.getAttribute("data-feedid");
+                    console.log(feedId);
+                    handler(feedId);
+                    return feedId;
+                });
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
 
 
 
@@ -228,15 +314,19 @@ class Controller {
         this.view = view;
 
         this.view.onClickCreateFeedObject(this.processAddFeed);
-        // this.model.bindFeedListChanged(this.onFeedListChanged);
-        this.view.displayFeed(this.model.feedList);
-        //   this.onFeedListChanged(this.model.feeds);
+
+        this.view.displayFeed(this.bindFeedDisplay);
+
         this.bindLogout(this.model.processLogout);
+
+        this.view.onClickToggleLike(this.model.saveLike, this.bindFeedDisplay);
     }
 
-    // onFeedListChanged = feeds => {
-    //     this.view.displayFeed(feeds);
-    // }
+
+
+    bindFeedDisplay = () => {
+        return this.model.getFeeds();
+    }
 
     processAddFeed = feed => {
         this.model.saveFeed(feed);
@@ -245,6 +335,10 @@ class Controller {
     bindLogout = processLogout => {
         this.view.onClickLogout(processLogout);
     }
+
+    // bindLike = feedId => {
+    //     this.model.saveLike(feedId);
+    // }
 
 }
 

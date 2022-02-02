@@ -7,10 +7,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
-
 import com.contact.Contact;
 
 @Service
@@ -83,6 +79,12 @@ public class CredentialService {
 			return "done";
 //		}
 //		return "notDone";
+	}
+
+	public String getName(HttpSession session) {
+		String contactId = (String) session.getAttribute("contactId");
+	    return ofy().load().type(Contact.class).id(contactId).now().getName();
+	 
 	}
 
 }

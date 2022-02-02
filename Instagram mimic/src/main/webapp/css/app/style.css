@@ -180,3 +180,7 @@ ul{
 #addFeed{
     margin-bottom: 40px;
 }
+
+.cheer.active{
+    color: rgb(230, 73, 230);
+}
