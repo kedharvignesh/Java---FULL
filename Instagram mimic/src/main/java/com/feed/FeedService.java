@@ -36,32 +36,32 @@ public class FeedService {
 	}
 
 	public String deleteFeed(String id) {
-		List<String> comments = ofy().load().type(Feed.class).id(id).now().getCommentId();
 		try {
-			ofy().delete().type(Feed.class).id(id).now();
-
+			List<String> comments = ofy().load().type(Feed.class).id(id).now().getCommentId();
 			for (String commentId : comments) {
 				ofy().delete().type(Comment.class).id(commentId).now();
 			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
+		ofy().delete().type(Feed.class).id(id).now();
+
 		return "deleted feed";
 
 	}
 
 	public List<Feed> getallFeed(HttpSession session) {
 		String contactId = (String) session.getAttribute("contactId");
-		List<String> friendList;  
+		List<String> friendList;
 		try {
-		friendList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
-		}catch (Exception e) {
-			friendList = new ArrayList<String>(); 
+			friendList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
+		} catch (Exception e) {
+			friendList = new ArrayList<String>();
 		}
 		List<Feed> feedList = ofy().load().type(Feed.class).filter("creatorId", contactId).list();
-		
-		for(String friendId : friendList) {
-		feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", friendId).list());	
+
+		for (String friendId : friendList) {
+			feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", friendId).list());
 		}
 		return feedList;
 	}
@@ -71,24 +71,31 @@ public class FeedService {
 	}
 
 	public List<Comment> getAllComments(String id) {
-		List<String> commentList = ofy().load().type(Feed.class).id(id).now().getCommentId();
 		List<Comment> feedComments = new ArrayList<Comment>();
+		try {
+		List<String> commentList = ofy().load().type(Feed.class).id(id).now().getCommentId();		
 		for (String comment : commentList) {
 			feedComments.add(ofy().load().type(Comment.class).id(comment).now());
+		}
+		}catch (Exception e) {
+
 		}
 		return feedComments;
 	}
 
-	public String postNewComment( Comment comment) {
+	public String postNewComment(Comment comment) {
 //		try {
-			ofy().save().entity(comment).now();
+		ofy().save().entity(comment).now();
 		Feed feed = ofy().load().type(Feed.class).id(comment.getFeedId()).now();
-		
+
 		List<String> commentList = new ArrayList<String>();
+		try {
+		commentList.addAll(feed.getCommentId());
+		}catch (Exception e) {
+		}
 		commentList.add(comment.getId());
 		feed.setCommentId(commentList);
 
-		
 		ofy().save().entity(feed).now();
 
 //		} catch (Exception e) {
@@ -98,12 +105,12 @@ public class FeedService {
 		return "Posted comment";
 	}
 
-	public String editComment( Comment comment) {
+	public String editComment(Comment comment) {
 //		try {
-			Comment currentComment = ofy().load().type(Comment.class).id(comment.getId()).now();
-			currentComment.setContent(comment.getContent());
-			currentComment.setEditedAt(comment.getEditedAt());
-			ofy().save().entity(currentComment).now();
+		Comment currentComment = ofy().load().type(Comment.class).id(comment.getId()).now();
+		currentComment.setContent(comment.getContent());
+		currentComment.setEditedAt(comment.getEditedAt());
+		ofy().save().entity(currentComment).now();
 //		} catch (Exception e) {
 //			return e.getMessage();
 //		}
@@ -129,13 +136,13 @@ public class FeedService {
 		Feed feed = ofy().load().type(Feed.class).id(id).now();
 		Set<String> cheerList = new HashSet<String>();
 		try {
-		cheerList.addAll(feed.getCheersContactId());
-		}catch (Exception e) {
+			cheerList.addAll(feed.getCheersContactId());
+		} catch (Exception e) {
 		}
-		if(!cheerList.contains(feed.getCreatorId())) {
-		cheerList.add(feed.getCreatorId());
-		}else {
-			cheerList.remove(feed.getCreatorId());		
+		if (!cheerList.contains(feed.getCreatorId())) {
+			cheerList.add(feed.getCreatorId());
+		} else {
+			cheerList.remove(feed.getCreatorId());
 		}
 		feed.setCheersContactId(cheerList);
 		ofy().save().entity(feed).now();

@@ -43,9 +43,9 @@ public class FeedController {
 		feedService.editFeed(id, feed);
 	}
 
-	@DeleteMapping(path = "/{feedId}")
-	public void deleteFeed(@PathVariable("feedId") String id) {
-		feedService.deleteFeed(id);
+	@DeleteMapping(path = "/{feedId}/delete")
+	public String deleteFeed(@PathVariable("feedId") String id) {
+		return feedService.deleteFeed(id);
 	}
 
 	@GetMapping(path = "/home")

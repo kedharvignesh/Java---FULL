@@ -103,12 +103,12 @@ class Model {
 
                 console.log(response);
                 if (response) {
-                    alert("posted feed");
+                    console.log("posted feed");
                     // window.location.reload();
                 }
             } catch (e) {
                 console.error(e);
-                alert("unable to post");
+                console.log("unable to post");
             }
         }
     }
@@ -149,6 +149,68 @@ class Model {
             console.error(e);
         }
     }
+
+    async saveComment(comment) {
+        if (comment != null) {
+            const url = "/api/v1/feeds/comments"
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: JSON.stringify(comment),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    mode: "cors"
+                });
+
+                console.log(response);
+                if (response) {
+                    console.log("posted comment");
+                }
+            } catch (e) {
+                console.error(e);
+                console.log("unable to post");
+            }
+        }
+    }
+
+    async deleteFeed(feedId) {
+        const url = "/api/v1/feeds/" + feedId + "/delete";
+        try {
+            const response = await fetch(url, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            console.log(response);
+            const message = await response.text();
+            console.log(message);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getCommentList(feedId) {
+        const url = "/api/v1/feeds/" + feedId + "/comments";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            console.log(response);
+            const commentList = await response.json();
+            console.log(commentList);
+            return commentList;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
 }
 
 
@@ -173,7 +235,7 @@ class View {
         return element
     }
 
-    async displayFeed(handler) {
+    async displayFeed(handler, handlerLike, handlerSaveCmnt, handlerGetCommentList, handlerDeleteFeed) {
         const feedList = await handler();
         console.log(feedList);
         this.feedList = feedList;
@@ -185,9 +247,18 @@ class View {
         } else {
             feedList.forEach(feed => {
                 let liked = "";
+
+                let likesCount = "";
+                let commentCount = "";
                 try {
                     if ((feed.cheersContactId).includes(feed.creatorId)) {
                         liked = "active";
+                    }
+                    if ((feed.cheersContactId).length) {
+                        likesCount = (feed.cheersContactId).length;
+                    }
+                    if ((feed.commentId).length) {
+                        commentCount = (feed.commentId).length;
                     }
                 } catch (e) {
                     console.error(e);
@@ -211,27 +282,25 @@ class View {
                                 <div class="bg-white p-2">
                                     <div class="d-flex flex-row fs-12">
                                         <div class="like p-2 cursor " ><i class="fa fa-thumbs-o-up " ></i><span
-                                                class="ml-1 cheer ${liked}" data-feedid=${feed.id}>Like</span>
+                                                class="ml-1 cheer ${liked}" data-feedid=${feed.id}>${likesCount} Like</span>
                                         </div>
                                         <div class="like p-2 cursor action-collapse" data-toggle="collapse"
                                             aria-expanded="true" aria-controls="collapse-${feed.id}" href="#collapse-${feed.id}"><i
-                                                class="fa fa-commenting-o"></i><span class="ml-1">Comment</span></div>
-                                        <div class="like p-2 cursor action-collapse" data-toggle="collapse"
-                                            aria-expanded="true" aria-controls="collapse-4" href="#collapse-4"><i
-                                                class="fa fa-share"></i><span class="ml-1">Edit</span></div>
+                                                class="fa fa-commenting-o"></i><span class="ml-1 cmntul" data-feedid=${feed.id}>${commentCount} Comments</span></div>
                                                 <div class="like p-2 cursor action-collapse"><i class="fa fa-share"></i><span
-                                                class="ml-1">Delete</span></div>
+                                                class="ml-1 dltfeed" data-feedid=${feed.id}>Delete</span></div>
                                     </div>
                                 </div>
                                 <div id="collapse-${feed.id}" class="bg-light p-2 collapse" data-parent="#myGroup">
-                                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle"
+                                <ul class="cmntlist" id="ul${feed.id}" ><li><div class="d-flex flex-row align-items-start "  ><img class="rounded-circle"
                                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                             width="40"><textarea
-                                            class="form-control ml-1 shadow-none textarea"></textarea>
-                                    </div>
-                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none"
+                                            class="form-control ml-1 shadow-none textarea "  id="cmntcontent${feed.id}"></textarea>
+                                    </div></li></ul>
+                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none cmntBtn" data-feedid=${feed.id} data-creatorid=${feed.creatorId} 
                                             type="button">Post comment</button><button
-                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none"
+                                            class="btn btn-outline-primary btn-sm ml-1 shadow-none cursor action-collapse" data-toggle="collapse"
+                                            aria-expanded="true" aria-controls="collapse-${feed.id}" href="#collapse-${feed.id}"
                                             type="button">Cancel</button>
                                     </div>
                                 </div>
@@ -239,10 +308,24 @@ class View {
 
                 feedUl.append(li);
             });
-
-
+            if (feedList) {
+                this.onClickToggleLike(handlerLike);
+                this.onClickCreateCommentObject(handlerSaveCmnt);
+                this.onClickDisplayComments(handlerGetCommentList);
+                this.onclickDeletePost(handlerDeleteFeed);
+            }
         }
     }
+
+    // async displayUtils(handler, handlerLike, handlerSaveCmnt, handlerGetCommentList, handlerDeleteFeed) {
+    //     let feedList = await handler();
+    //     if (feedList) {
+    //         this.onClickToggleLike(handlerLike);
+    //         this.onClickCreateCommentObject(handlerSaveCmnt);
+    //         this.onClickDisplayComments(handlerGetCommentList);
+    //         this.onclickDeletePost(handlerDeleteFeed);
+    //     }
+    // }
 
     generateUniqueId() {
         return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -274,12 +357,12 @@ class View {
 
     }
 
-    async onClickToggleLike(handler, handler2) {
+    async onClickToggleLike(handler) {
         console.log(handler);
         let feedId;
         try {
-            let likes = await handler2();
-            likes = document.querySelectorAll(".cheer");
+            // let likes = await handler2();
+            let likes = document.querySelectorAll(".cheer");
             console.log(likes);
             Array.from(likes).forEach((elem) => {
                 elem.addEventListener("click", (e) => {
@@ -302,8 +385,89 @@ class View {
 
     }
 
+    async onClickCreateCommentObject(handler) {
+
+        try {
+            // let postComments = await handler2();
+            let postComments = document.querySelectorAll(".cmntBtn");
+            console.log(postComments);
+            Array.from(postComments).forEach(elem => {
+                elem.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    let feedId = elem.getAttribute("data-feedid");
+                    let creatorId = elem.getAttribute("data-creatorid");
+                    const message = document.querySelector("#cmntcontent" + feedId).value;
+
+                    const comment = {
+                        id: this.generateUniqueId(),
+                        feedId: feedId,
+                        creatorId: creatorId,
+                        content: message,
+                        createdAt: Date.now(),
+                        editedAt: Date.now(),
+                    }
+
+                    console.log(comment);
+                    handler(comment);
+                });
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    async onclickDeletePost(handler) {
+        try {
+            // let deleteFeed = await handler2();
+            let deleteFeed = document.querySelectorAll(".dltfeed");
+            console.log(deleteFeed);
+            Array.from(deleteFeed).forEach(elem => {
+                elem.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    let feedId = elem.getAttribute("data-feedid");
+
+                    handler(feedId);
+                });
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async onClickDisplayComments(handler) {
+        // let commentUl = await handler2();
 
 
+        try {
+            let commentUl = document.querySelectorAll(".cmntul");
+            Array.from(commentUl).forEach(elem => {
+                elem.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    let feedId = elem.getAttribute("data-feedid");
+                    const ul = document.querySelector("#ul" + feedId);
+                    console.log(ul.children.length);
+                    if (ul.children.length < 2) {
+                        const commentList = await handler(feedId);
+
+                        console.log(commentList);
+                        commentList.forEach(comment => {
+                            const li = this.createElement("li");
+                            li.innerHTML = `<div class="d-flex flex-row align-items-start "  ><img class="rounded-circle"
+src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+width="40"><p class="form-control ml-1 shadow-none textarea "  ">${comment.content}</p></div>`;
+
+                            ul.prepend(li);
+
+                        });
+                    }
+                });
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
 
 }
 
@@ -315,11 +479,19 @@ class Controller {
 
         this.view.onClickCreateFeedObject(this.processAddFeed);
 
-        this.view.displayFeed(this.bindFeedDisplay);
+        this.view.displayFeed(this.bindFeedDisplay, this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.model.deleteFeed);
+
+        // this.view.displayUtils(this.bindFeedDisplay, this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.model.deleteFeed);
 
         this.bindLogout(this.model.processLogout);
 
-        this.view.onClickToggleLike(this.model.saveLike, this.bindFeedDisplay);
+        //    this.view.onClickToggleLike(this.model.saveLike, this.bindFeedDisplay);
+
+        //  this.view.onClickCreateCommentObject(this.processAddcomment, this.bindFeedDisplay);
+
+        // this.view.onclickDeletePost(this.model.deleteFeed, this.bindFeedDisplay)
+
+        // this.view.onClickDisplayComments(this.model.getCommentList, this.bindFeedDisplay);
     }
 
 
@@ -336,9 +508,10 @@ class Controller {
         this.view.onClickLogout(processLogout);
     }
 
-    // bindLike = feedId => {
-    //     this.model.saveLike(feedId);
-    // }
+    processAddcomment = comment => {
+        this.model.saveComment(comment);
+    }
+
 
 }
 

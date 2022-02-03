@@ -86,15 +86,15 @@ document.querySelector("#signUpForm").addEventListener("submit", async (e) => {
             const message = await response.text();
             console.log(message);
             if (message == "existing Email") {
-                alert("Existing email");
+                console.log("Existing email");
             } else if (message == "success") {
-                alert("Welcome - account created");
+                console.log("Welcome - account created");
                 window.location.reload();
             }
 
         } catch (e) {
             console.error(e);
-            alert("unable to create account");
+            console.log("unable to create account");
         }
     } else if (name == "") {
         error[2].style.opacity = "1";
@@ -137,13 +137,13 @@ document.querySelector("#loginForm").addEventListener("submit", async (e) => {
             const message = await response.text();
             console.log(message);
             if (message == "Invalid Email or password" || message == "mail not found") {
-                alert("Invalid Email or password");
+                console.log("Invalid Email or password");
             } else if (message == "welcome") {
                 window.location.replace("https://kedhar-internship.appspot.com/app");
             }
         } catch (e) {
             console.error(e);
-            alert("unable to Sign in");
+            console.log("unable to Sign in");
         }
     } else if (!checkValidEmail(email)) {
         error[0].style.opacity = "1";
