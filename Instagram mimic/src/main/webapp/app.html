@@ -16,8 +16,9 @@
 <body>
     <nav class="nav flex-column navBlack">
         <a class="nav-link  nav-linkBlack" id="homeBtn" href="#">Home</a>
-        <a class="nav-link nav-linkBlack" href="#">My feed </a>
-        <a class="nav-link nav-linkBlack" href="#">My profile</a>
+        <a class="nav-link nav-linkBlack" id="myFeedsBtn" href="#">My feed </a>
+        <a class="nav-link nav-linkBlack" id="myProfileBtn" href="#">My profile</a>
+        <a class="nav-link nav-linkBlack" id="navMyFriends" href="#">My Friends</a>
         <a class="nav-link nav-linkBlack" id="logoutBtn" href="#">Logout</a>
     </nav>
 
@@ -25,8 +26,8 @@
         <div class="wrapper col-md-12">
             <div class="search-input" id="searchInputDiv">
                 <input class="userInput" id="searchContactInput" type="text" placeholder="Find People..." />
-                <div class="search-suggestion">
-
+                <div>
+                    <ul class="search-suggestion"></ul>
                 </div>
             </div>
         </div>
@@ -41,6 +42,7 @@
                 <div class="col-md-8">
                     <div class="d-flex flex-column comment-section" id="myGroup">
                         <ul id="feedUl">
+
                             <li>
                                 <div class="card gedf-card" id="addFeed">
                                     <div class="card-header">
@@ -91,6 +93,46 @@
                                 </div>
                             </li>
                             <hr class="divider">
+                            <!-- <li id="profiletest">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
+                                            <div class="well well-sm">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-md-4">
+                                                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                                            width="150" />
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-8">
+                                                        <h4>
+                                                            Roger Federer</h4>
+                                                        <small><cite title="Chennai, India">Chennai, India <i
+                                                                    class="glyphicon glyphicon-map-marker">
+                                                                </i></cite></small>
+                                                        <p>
+                                                            <i class="glyphicon glyphicon-envelope"></i>Email :
+                                                            email@example.com
+                                                            <br />
+
+                                                            <i class="glyphicon glyphicon-gift"></i>Joined On - June 02,
+                                                            1988
+                                                        </p>
+
+
+                                                        <button type="button" class="btn btn-success">
+                                                            Add friend</button>
+                                                        <button type="button" class="btn btn-info">
+                                                            friends</button>
+                                                        <button type="button" class="btn btn-info">
+                                                            mutual friend</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="divider">
+                            </li> -->
                             <!-- <li>
                                 <div class="bg-white p-2">
 
@@ -280,6 +322,111 @@
                                 </div>
                                 <hr class="divider">
                             </li> -->
+                        </ul>
+                        <ul id="friendListUltop">
+                            <!-- <li>
+                                <div class="container-fluid">
+                                    <div class="row" id="mcl_app">
+
+                                        <section class="col-12" id="mcl_header_bar">
+
+
+                                            <div class="row lower_header_bar">
+                                                <div class="col-10">
+                                                    <i class="fa fa-chevron-left"></i>
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <i class="fa fa-plus"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="row heading">
+                                                <div class="col-12">
+                                                    <h3>Friends(10)</h3>
+                                                    <div class="row mcl_search_row">
+                                                        <div class="col-12">
+                                                            <i class="fa fa-search"></i>
+                                                            <input type="text" class="mcl_ip_search"
+                                                                placeholder="Search for friends">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="col-12" id="mcl_body">
+                                            <div class="row">
+                                                <div class="col-10 left_side">
+                                                    <ul id="friendListUlbottom">
+                                                        <!-- <li>
+                                                            <div>
+                                                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                                                    alt="">
+                                                                <span class="contact_info">
+                                                                    Roger Federer<br>
+                                                                    <span>
+                                                                        Chennai,
+                                                                        <span class="last_seen">Email :
+                                                                            example@eg.com</span>
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </li> 
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </li> -->
+                        </ul>
+                        <ul id="profileUl">
+                            <!-- <li>
+
+                                <div class="profile-pic-edit">
+                                    <label class="-label" for="file-change">
+                                        <span class="glyphicon glyphicon-camera"></span>
+                                        <span>Change Image</span>
+                                    </label>
+                                    <input id="file-change" type="file" onchange="loadFile(event)" />
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                        id="output" width="160" />
+                                </div>
+                                <br><br>
+                            </li>
+                            <li>
+                                <label class="errorLabel-display-edit" id="nameError-edit" for="name-edit">Name :
+                                </label>
+                                <input class="userInput" id="name-edit" type="text" value="federer" />
+                                <br><br>
+                            </li>
+                            <li>
+                                <label class="errorLabel-display-edit" id="emailError-edit" for="email-edit">E-mail :
+                                </label>
+                                <input class="userInput" id="email-edit" type="email" />
+                                <br><br>
+                            </li>
+                            <li>
+                                <label class="errorLabel-display-edit" id="location-edit" for="name">Location :
+                                </label>
+                                <input class="userInput" id="location-edit" type="text" /><br><br>
+                            </li>
+                            <li>
+                                <label class="errorLabel-display" id="genderError-edit" for="gender-edit">Select a
+                                    Gender
+                                </label>
+                                <select class="userInput " name="gender-edit" id="gender-edit">
+                                    <option value="">--Gender--</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select><br><br>
+                            </li>
+                            <li>
+                                <button class="btn btn-success " type="button">save changes</button>
+                                <button class="btn btn-secondary " type="button">Cancel</button>
+                            </li> -->
+
                         </ul>
                     </div>
                 </div>

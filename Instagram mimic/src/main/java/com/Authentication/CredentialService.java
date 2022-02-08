@@ -69,22 +69,27 @@ public class CredentialService {
 //		model.put("contactId", contactId);
 	}
 
-	public String processLogout( HttpSession session) {
+	public String processLogout(HttpSession session) {
 //		model.clear();
 //		model.remove("contactId");
 //		status.setComplete();
 //		request.removeAttribute("contactId", WebRequest.SCOPE_SESSION);
 //		if (model.isEmpty()) {
 		session.invalidate();
-			return "done";
+		return "done";
 //		}
 //		return "notDone";
 	}
 
 	public String getName(HttpSession session) {
 		String contactId = (String) session.getAttribute("contactId");
-	    return ofy().load().type(Contact.class).id(contactId).now().getName();
-	 
+		return ofy().load().type(Contact.class).id(contactId).now().getName();
+
+	}
+
+	public Contact getMyContact(HttpSession session) {
+		String contactId = (String) session.getAttribute("contactId");
+		return ofy().load().type(Contact.class).id(contactId).now();
 	}
 
 }

@@ -3,6 +3,8 @@ package com.contact;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @RestController
-@SessionAttributes({"contactId"})
+@SessionAttributes({ "contactId" })
 @RequestMapping(path = "api/v1/contact")
 public class ContactController {
 
@@ -36,7 +38,7 @@ public class ContactController {
 		contactService.deleteContact(id);
 	}
 
-	@PutMapping(path = "/{contactId}")
+	@PutMapping(path = "/edit")
 	public String editContactDetails(@RequestBody Contact contact) {
 		return contactService.editContact(contact);
 	}
@@ -50,10 +52,15 @@ public class ContactController {
 	public List<Contact> getMutualList(@PathVariable("contactId") String id, ModelMap model) {
 		return contactService.getMutualFriends(id, model);
 	}
-	
+
 	@PutMapping(path = "/{contactId}/addFriend")
-	public void addFreind(@PathVariable("contactId") String id) {
-	contactService.addFriend(id);	
+	public void addFreind(@PathVariable("contactId") String id,HttpSession session) {
+		contactService.addFriend(id,session);
+	}
+
+	@GetMapping(path = "/allContacts")
+	public List<Contact> getAllContacts() {
+		return contactService.getAllContacts();
 	}
 
 }

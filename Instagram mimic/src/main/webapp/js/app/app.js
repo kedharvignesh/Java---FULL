@@ -1,9 +1,9 @@
 class Model {
     constructor() {
         // this.feeds = this.getFeeds() || [];
-        this.getContactId();
-        this.getContactName();
-        this.getFeeds();
+        // this.myContact = this.getMyContact();
+        // this.getContactName();
+        // this.getFeeds();
 
 
     }
@@ -13,7 +13,7 @@ class Model {
     }
 
     async getContactId() {
-        let contactId;
+
         const url = "/getId";
         try {
             const response = await fetch(url, {
@@ -25,9 +25,9 @@ class Model {
             });
 
             console.log(response);
-            contactId = await response.text();
+            let contactId = await response.text();
             console.log(contactId);
-            this.creatorId = contactId;
+            return contactId;
         } catch (e) {
             console.error(e);
         }
@@ -35,7 +35,7 @@ class Model {
     }
 
     async getContactName() {
-        let contactName;
+
         const url = "/getName";
         try {
             const response = await fetch(url, {
@@ -47,16 +47,57 @@ class Model {
             });
 
             console.log(response);
-            contactName = await response.text();
+            let contactName = await response.text();
             console.log(contactName);
-            this.creatorName = contactName;
+            return contactName;
         } catch (e) {
             console.error(e);
         }
 
     }
 
-    async getFeeds() {
+    async getMyContact() {
+
+        const url = "/myContact";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+                mode: "cors"
+            });
+
+            console.log(response);
+            const contact = await response.json();
+            console.log(contact);
+            return contact;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getFriendList(contactId) {
+        const url = "api/v1/contact/" + contactId + "/friends";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                },
+                mode: "cors"
+            });
+
+            console.log(response);
+            const friendList = await response.json();
+            console.log(friendList);
+            return friendList;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getMyFeeds() {
         const url = "/api/v1/feeds/my";
         try {
             const response = await fetch(url, {
@@ -69,27 +110,18 @@ class Model {
 
             console.log(response);
             const feeds = await response.json();
-            this.feedList = feeds;
-            console.log(this.feedList);
             return feeds;
         } catch (e) {
             console.error(e);
-            this.feedList = [];
-            return this.feedList;
+
         }
 
     }
 
 
     async saveFeed(feed) {
-
         if (feed != null) {
-            try {
-                feed.creatorId = this.creatorId;
-                feed.creatorName = this.creatorName;
-            } catch (e) {
-                console.error(e);
-            }
+
             const url = "/api/v1/feeds/my"
             try {
                 const response = await fetch(url, {
@@ -104,11 +136,12 @@ class Model {
                 console.log(response);
                 if (response) {
                     console.log("posted feed");
-                    // window.location.reload();
                 }
+                return response;
             } catch (e) {
                 console.error(e);
                 console.log("unable to post");
+                return null;
             }
         }
     }
@@ -187,6 +220,7 @@ class Model {
             console.log(response);
             const message = await response.text();
             console.log(message);
+            return message;
         } catch (e) {
             console.error(e);
         }
@@ -208,6 +242,86 @@ class Model {
             return commentList;
         } catch (e) {
             console.error(e);
+        }
+    }
+
+    async getAllContacts() {
+        const url = "/api/v1/contact/allContacts";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            console.log(response);
+            const contactList = await response.json();
+            console.log(contactList);
+            return contactList;
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getUserFeed(contactId) {
+        const url = "/api/v1/feeds/" + contactId;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            console.log(response);
+            const feedList = await response.json();
+            console.log(feedList);
+            return feedList;
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async toggleFriendList(contactId) {
+        const url = "/api/v1/contact/" + contactId + "/addFriend";
+        try {
+            const response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json"
+                },
+                mode: "cors"
+            });
+            console.log(response);
+
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    async saveEditContact(contact) {
+        console.log(contact);
+        if (contact != null) {
+            const url = "/api/v1/contact/edit"
+            try {
+                const response = await fetch(url, {
+                    method: "PUT",
+                    body: JSON.stringify(contact),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    mode: "cors"
+                });
+
+                const message = await response.text();
+                return message;
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -235,11 +349,122 @@ class View {
         return element
     }
 
-    async displayFeed(handler, handlerLike, handlerSaveCmnt, handlerGetCommentList, handlerDeleteFeed) {
-        const feedList = await handler();
+    async onClickMyFeed(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed) {
+        const myFeedsBtn = document.querySelector("#myFeedsBtn");
+        myFeedsBtn.addEventListener("click", async (e) => {
+            const navButtons = document.querySelectorAll(".nav-linkBlack");
+            Array.from(navButtons).forEach(elem => {
+                elem.style.background = "none";
+                elem.style.color = "lightgoldenrodyellow";
+            });
+            document.querySelector("#friendListUltop").innerHTML = "";
+            document.querySelector("#feedUl").innerHTML = "";
+            document.querySelector("#friendListUltop").innerHTML = "";
+            document.querySelector("#profileUl").innerHTML = "";
+
+
+            myFeedsBtn.style.background = "rgba(249, 255, 254, 0.966)";
+            myFeedsBtn.style.color = "#222222";
+
+            let feedList = await getMyFeedList();
+            if (feedList) {
+                this.displayFeed(feedList, handlerLike, handlerSaveCmnt, handlerGetCommentList);
+                this.listenersInitializer(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed);
+
+            }
+        });
+
+    }
+
+    listenersInitializer(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed) {
+        this.onClickcreateFeed(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed);
+        this.onclickDeletePost(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed);
+    }
+
+    async onClickcreateFeed(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed) {
+
+        let addFeed = document.querySelector("#feedSubmit");
+        addFeed.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const textArea = document.querySelector("#message");
+            const message = textArea.value;
+            const myContact = await getMyContact();
+
+            if (myContact) {
+                console.log(myContact);
+                const feed = {
+                    id: this.generateUniqueId(),
+                    content: message,
+                    createdAt: Date.now(),
+                    editedAt: Date.now(),
+                    creatorId: myContact.id,
+                    creatorName: myContact.name,
+                }
+                console.log(feed);
+                let storefeeds = await saveFeed(feed);
+                textArea.value = "";
+                console.log(storefeeds);
+                if (storefeeds) {
+                    console.log(storefeeds);
+                    let newfeeds = await getMyFeedList();
+                    if (newfeeds) {
+                        document.querySelector("#feedUl").innerHTML = "";
+                        let newDisplay = await this.displayFeed(newfeeds, handlerLike, handlerSaveCmnt, handlerGetCommentList);
+                        newDisplay = this.listenersInitializer(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed);
+
+                    }
+
+                }
+
+
+            }
+
+        });
+
+
+
+    }
+
+
+    async onclickDeletePost(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed) {
+
+        let deleteBtn = document.querySelectorAll(".dltfeed");
+        console.log(deleteBtn);
+        Array.from(deleteBtn).forEach(elem => {
+            elem.addEventListener("click", async (e) => {
+                e.preventDefault();
+                let feedId = elem.getAttribute("data-feedid");
+                let deleteFeed = await removeFeed(feedId);
+                console.log(deleteFeed)
+                if (deleteFeed) {
+                    let newFeedList = await getMyFeedList();
+                    console.log(newFeedList);
+                    if (newFeedList) {
+                        console.log(newFeedList);
+                        document.querySelector("#feedUl").innerHTML = "";
+
+                        let newDisplay = await this.displayFeed(newFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList);
+
+                        newDisplay = this.listenersInitializer(getMyFeedList, handlerLike, handlerSaveCmnt, handlerGetCommentList, saveFeed, getMyContact, removeFeed);
+
+                    }
+                }
+
+
+
+            });
+        });
+
+    }
+
+    async displayFeed(feedList, handlerLike, handlerSaveCmnt, handlerGetCommentList) {
+
         console.log(feedList);
-        this.feedList = feedList;
+
+        // this.feedList = feedList;
         const feedUl = document.querySelector("#feedUl");
+        feedUl.prepend(this.displayAddFeed());
+
         if (feedList.length === 0) {
             const h2 = this.createElement("h2");
             h2.innerText = "No feeds to show , add friend or post new feed ?";
@@ -250,29 +475,42 @@ class View {
 
                 let likesCount = "";
                 let commentCount = "";
+                let CreatedDate = new Date(feed.createdAt).toLocaleString();
+
+
                 try {
                     if ((feed.cheersContactId).includes(feed.creatorId)) {
                         liked = "active";
                     }
+                } catch (e) {
+                }
+
+                try {
                     if ((feed.cheersContactId).length) {
                         likesCount = (feed.cheersContactId).length;
                     }
+                } catch (e) {
+                }
+
+                try {
                     if ((feed.commentId).length) {
                         commentCount = (feed.commentId).length;
                     }
                 } catch (e) {
-                    console.error(e);
                 }
-                const li = this.createElement("li");
 
-                li.innerHTML = `<div class="bg-white p-2">
+
+
+                const li = this.createElement("li", "feedli");
+
+                li.innerHTML = `<div class="bg-white p-2 ">
 
                                     <div class="d-flex flex-row user-info"><img class="rounded-circle"
                                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                                             width="40">
                                         <div class="d-flex flex-column justify-content-start ml-2"><span
                                                 class="d-block font-weight-bold name">${feed.creatorName}</span><span
-                                                class="date text-black-50">${feed.createdAt}</span></div>
+                                                class="date text-black-50">${CreatedDate}</span></div>
                                     </div>
                                     <div class="mt-2">
                                         <p class="comment-text">${feed.content}
@@ -305,27 +543,72 @@ class View {
                                     </div>
                                 </div>
                                 <hr class="divider">`
-
                 feedUl.append(li);
             });
             if (feedList) {
                 this.onClickToggleLike(handlerLike);
                 this.onClickCreateCommentObject(handlerSaveCmnt);
                 this.onClickDisplayComments(handlerGetCommentList);
-                this.onclickDeletePost(handlerDeleteFeed);
+                return "display Loaded";
             }
         }
     }
 
-    // async displayUtils(handler, handlerLike, handlerSaveCmnt, handlerGetCommentList, handlerDeleteFeed) {
-    //     let feedList = await handler();
-    //     if (feedList) {
-    //         this.onClickToggleLike(handlerLike);
-    //         this.onClickCreateCommentObject(handlerSaveCmnt);
-    //         this.onClickDisplayComments(handlerGetCommentList);
-    //         this.onclickDeletePost(handlerDeleteFeed);
-    //     }
-    // }
+
+    displayAddFeed() {
+        const li = this.createElement("li");
+        li.innerHTML = `<li>
+        <div class="card gedf-card" id="addFeed">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="posts-tab" data-toggle="tab"
+                            href="#posts" role="tab" aria-controls="posts"
+                            aria-selected="true">Write post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="images-tab" data-toggle="tab" role="tab"
+                            aria-controls="images" aria-selected="false"
+                            href="#images">Images</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="posts" role="tabpanel"
+                        aria-labelledby="posts-tab">
+                        <div class="form-group">
+                            <label class="sr-only" for="message">post</label>
+                            <textarea class="form-control" id="message" rows="3"
+                                placeholder="What are you thinking?"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="images" role="tabpanel"
+                        aria-labelledby="images-tab">
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Upload
+                                    image</label>
+                            </div>
+                        </div>
+                        <div class="py-4"></div>
+                    </div>
+                </div>
+                <div class="btn-toolbar justify-content-between">
+                    <div class="btn-group">
+                        <button type="submit" id="feedSubmit"
+                            class="btn btn-primary">share</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </li>
+    <hr class="divider">`;
+        return li;
+    }
 
     generateUniqueId() {
         return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -336,26 +619,10 @@ class View {
         this.logoutBtn.addEventListener("click", logout)
     }
 
-
-    onClickCreateFeedObject(handler) {
-        let feed;
-        document.querySelector("#feedSubmit").addEventListener("click", (e) => {
-            e.preventDefault();
-            const message = document.querySelector("#message").value;
-
-            feed = {
-                id: this.generateUniqueId(),
-                content: message,
-                createdAt: Date.now(),
-                editedAt: Date.now(),
-            }
-            this.newFeed = feed;
-            console.log(this.newFeed);
-            handler(this.newFeed);
-        });
-
-
+    createFeed() {
+        return document.querySelector("#feedSubmit");
     }
+
 
     async onClickToggleLike(handler) {
         console.log(handler);
@@ -396,7 +663,8 @@ class View {
                     e.preventDefault();
                     let feedId = elem.getAttribute("data-feedid");
                     let creatorId = elem.getAttribute("data-creatorid");
-                    const message = document.querySelector("#cmntcontent" + feedId).value;
+                    const textArea = document.querySelector("#cmntcontent" + feedId);
+                    const message = textArea.value;
 
                     const comment = {
                         id: this.generateUniqueId(),
@@ -409,6 +677,7 @@ class View {
 
                     console.log(comment);
                     handler(comment);
+                    textArea.value = "";
                 });
             });
         } catch (e) {
@@ -417,23 +686,7 @@ class View {
 
     }
 
-    async onclickDeletePost(handler) {
-        try {
-            // let deleteFeed = await handler2();
-            let deleteFeed = document.querySelectorAll(".dltfeed");
-            console.log(deleteFeed);
-            Array.from(deleteFeed).forEach(elem => {
-                elem.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    let feedId = elem.getAttribute("data-feedid");
 
-                    handler(feedId);
-                });
-            });
-        } catch (e) {
-            console.error(e);
-        }
-    }
 
     async onClickDisplayComments(handler) {
         // let commentUl = await handler2();
@@ -469,6 +722,452 @@ width="40"><p class="form-control ml-1 shadow-none textarea "  ">${comment.conte
 
     }
 
+
+    async searchPeople(handler, handlerFeed, handlerLike, handlerSaveCmnt, handlerGetCommentList, toggleFriendList, myContacthandler) {
+        let contactList = await handler();
+        console.log(contactList)
+
+        const userInput = document.querySelector("#searchContactInput");
+        userInput.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            let key = e.target.value.toLowerCase();
+            let suggBox = document.querySelector(".search-suggestion");
+            let searchInputDiv = document.getElementById("searchInputDiv");
+            document.body.addEventListener("mouseup", () => {
+                searchInputDiv.classList.remove("active");
+                document.querySelector("#feedUl").style.display = "";
+                document.querySelector("#friendListUltop").style.display = "";
+                document.querySelector("#profileUl").style.display = "";
+            });
+
+            if (key != "" && contactList.length !== 0) {
+                suggBox.innerHTML = contactList.filter((contact) => {
+                    let contactName = contact.name.toLowerCase()
+                    return contactName.indexOf(key) != -1;
+                }).map((contact) => {
+
+                    return contact = `<li class="li-search" id=search${contact.id} data-contactid=${contact.id} data-contactname=${contact.name} data-contactmail=${contact.email} data-contactcreatedat=${contact.createdAt}><img class="rounded-circle"
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    width="25">${contact.name} </li>`;
+
+                }).join('');
+
+                searchInputDiv.classList.add("active");
+                document.querySelector("#feedUl").style.display = "none";
+                document.querySelector("#friendListUltop").style.display = "none";
+                document.querySelector("#profileUl").style.display = "none";
+
+
+
+                //selecting contact
+                let allList = document.querySelectorAll(".li-search");
+
+                Array.from(allList).forEach((elem) => {
+
+                    elem.addEventListener("click", async (e) => {
+                        document.querySelector("#friendListUltop").innerHTML = "";
+                        document.querySelector("#profileUl").innerHTML = "";
+
+                        const navButtons = document.querySelectorAll(".nav-linkBlack");
+                        Array.from(navButtons).forEach(elem => {
+                            elem.style.background = "none";
+                            elem.style.color = "lightgoldenrodyellow";
+                        });
+                        const contactId = elem.getAttribute("data-contactid");
+                        const myContact = await myContacthandler();
+                        console.log(myContact);
+                        const name = elem.getAttribute("data-contactname");
+                        const email = elem.getAttribute("data-contactmail");
+                        let timestamp = elem.getAttribute("data-contactcreatedat");
+                        console.log(timestamp);
+                        let joinedDate = new Date(+timestamp).toLocaleString();
+                        let toggleFriend = "follow";
+                        let btnGroup = "btn-success";
+                        try {
+                            if ((myContact.friendsList).includes(contactId)) {
+                                toggleFriend = "unFollow";
+                                btnGroup = "btn-danger";
+                            }
+                        } catch (e) {
+                            console.error(e);
+                        }
+                        const feedUl = document.querySelector("#feedUl");
+                        feedUl.innerHTML = "";
+
+
+                        feedUl.innerHTML = `<li id="profiletest">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="well well-sm">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-4">
+                                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                                    width="150" />
+                                            </div>
+                                            <div class="col-sm-6 col-md-8">
+                                                <h4>
+                                                    ${name}</h4>
+                                                <small><cite title="Chennai, India">Chennai, India <i
+                                                            class="glyphicon glyphicon-map-marker">
+                                                        </i></cite></small>
+                                                <p>
+                                                    <i class="glyphicon glyphicon-envelope"></i>Email :
+                                                    ${email}
+                                                    <br />
+
+                                                    <i class="glyphicon glyphicon-gift"></i>Joined On - ${joinedDate},
+                                                </p>
+
+
+                                                <button type="button" class="btn ${btnGroup} " id="addFriendBtn">
+                                                    ${toggleFriend}</button>
+                                                <button type="button" class="btn btn-info">
+                                                    friends</button>
+                                                <button type="button" class="btn btn-info">
+                                                    mutual friend</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="divider">
+                    </li>`;
+
+                        let userFeeds = await handlerFeed(contactId);
+
+
+                        let deleteFeed = await this.displayFeed(userFeeds, handlerLike, handlerSaveCmnt, handlerGetCommentList);
+                        document.querySelector("#addFeed").remove();
+                        deleteFeed = document.querySelectorAll(".dltfeed");
+                        Array.from(deleteFeed).forEach(elem => {
+                            elem.remove();
+                        });
+
+
+                        if (deleteFeed) {
+                            let addFriendBtn = document.querySelector("#addFriendBtn");
+                            addFriendBtn.addEventListener("click", async (e) => {
+                                e.preventDefault();
+                                if (addFriendBtn.innerText == "follow") {
+                                    addFriendBtn.classList.remove("btn-success");
+                                    addFriendBtn.classList.add("btn-danger");
+                                    addFriendBtn.innerText = "unFollow";
+                                } else {
+                                    addFriendBtn.classList.remove("unFollow");
+                                    addFriendBtn.classList.add("btn-success");
+                                    addFriendBtn.innerText = "follow";
+                                }
+
+                                toggleFriendList(contactId);
+                            });
+
+                        }
+                    });
+
+                });
+
+
+            } else if (key == "") {
+                searchInputDiv.classList.remove("active");
+                document.querySelector("#feedUl").style.display = "";
+                document.querySelector("#friendListUltop").style.display = "";
+                document.querySelector("#profileUl").style.display = "";
+            }
+
+
+        });
+    }
+
+    async onClickMyFriends(getMyContactId, getMyFriendList) {
+        const myFreindsBtn = document.querySelector("#navMyFriends");
+        myFreindsBtn.addEventListener("click", async (e) => {
+
+            document.querySelector("#feedUl").innerHTML = "";
+            document.querySelector("#profileUl").innerHTML = "";
+
+            document.querySelector("#friendListUltop");
+
+            this.displayFriendListHtml();
+            const navButtons = document.querySelectorAll(".nav-linkBlack");
+            Array.from(navButtons).forEach(elem => {
+                elem.style.background = "none";
+                elem.style.color = "lightgoldenrodyellow";
+            });
+
+
+            myFreindsBtn.style.background = "rgba(249, 255, 254, 0.966)";
+            myFreindsBtn.style.color = "#222222";
+
+            let myContactId = await getMyContactId();
+            let friendList = await getMyFriendList(myContactId);
+
+            this.displayFriendList(friendList);
+        });
+    }
+
+    displayFriendListHtml() {
+        const ul = document.querySelector("#friendListUltop");
+        ul.innerHTML = `<li>
+    <div class="container-fluid">
+        <div class="row" id="mcl_app">
+
+            <section class="col-12" id="mcl_header_bar">
+
+
+                <div class="row lower_header_bar">
+                    <div class="col-10">
+                        <i class="fa fa-chevron-left"></i>
+                    </div>
+                    <div class="col-2 text-right">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                </div>
+
+                <div class="row heading">
+                    <div class="col-12">
+                        <h3 id="friendsH3">Friends ()</h3>
+                        <div class="row mcl_search_row">
+                            <div class="col-12">
+                                <i class="fa fa-search"></i>
+                                <input type="text" class="mcl_ip_search"
+                                    placeholder="Search for friends">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-12" id="mcl_body">
+                <div class="row">
+                    <div class="col-10 left_side">
+                        <ul id="friendListUlbottom">
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</li>`;
+        return ul;
+    }
+
+    displayFriendList(friendList) {
+        const friendListUl = document.querySelector("#friendListUlbottom");
+        document.querySelector("#friendsH3").innerText = `Friends (${friendList.length})`;
+        try {
+            if (friendList.length === 0) {
+                const li = this.createElement("li");
+                li.innerHTML = `<h2>No friends to display , try adding friends </h2>`;
+                friendListUl.append(li);
+            } else {
+                friendList.forEach(contact => {
+                    const li = this.createElement("li");
+                    li.innerHTML = `<div>
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    alt="">
+                <span class="contact_info">
+                    ${contact.name}<br>
+                    <span>
+                        Chennai,
+                        <span class="last_seen">Email :
+                            ${contact.email}</span>
+                    </span>
+                </span>
+                
+            </div><br>`;
+                    friendListUl.append(li);
+                });
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+
+    async onClickMyProfile(getMyContact, saveEditContact) {
+        const myProfileBtn = document.querySelector("#myProfileBtn");
+        myProfileBtn.addEventListener("click", async (e) => {
+            const navButtons = document.querySelectorAll(".nav-linkBlack");
+            Array.from(navButtons).forEach(elem => {
+                elem.style.background = "none";
+                elem.style.color = "lightgoldenrodyellow";
+            });
+            document.querySelector("#friendListUltop").innerHTML = "";
+            document.querySelector("#feedUl").innerHTML = "";
+            document.querySelector("#profileUl").innerHTML = "";
+
+            myProfileBtn.style.background = "rgba(249, 255, 254, 0.966)";
+            myProfileBtn.style.color = "#222222";
+
+            let myContact = await getMyContact();
+            if (myContact) {
+                let displayReady = this.displayMyProfile(myContact);
+                if (displayReady) {
+                    this.onClickEditProfileBtn(myContact, saveEditContact);
+                }
+            }
+        });
+
+    }
+
+    async onClickEditProfileBtn(myContact, saveEditContact) {
+        const editProfileBtn = document.querySelector("#editProfileBtn");
+        editProfileBtn.addEventListener("click", async (e) => {
+            profileUl.innerHTML = "";
+            let displayEdit = this.displayEdit(myContact);
+            if (displayEdit) {
+                document.querySelector("#cancelEdit").addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    const profileUl = document.querySelector("#profileUl");
+                    profileUl.innerHTML = "";
+
+                    this.displayMyProfile(myContact);
+                });
+
+                this.onClickSaveChangesBtn(myContact, saveEditContact);
+
+            }
+        });
+    }
+
+
+    async onClickSaveChangesBtn(myContact, saveEditContact) {
+
+        const saveChangesBtn = document.querySelector("#saveChanges");
+        saveChangesBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const newName = document.querySelector("#name-edit").value;
+            const newEmail = document.querySelector("#email-edit").value;
+            const error = document.querySelector("#emailError-edit");
+            if (this.checkValidEmail(newEmail) && newName != null) {
+                const newContact = {
+                    id: myContact.id,
+                    name: newName,
+                    email: newEmail,
+                    createdAt: myContact.createdAt,
+                    editedAt: Date.now(),
+                    gender: myContact.gender,
+                }
+                console.log(newContact);
+                const message = await saveEditContact(newContact);
+                if (message == "Existing Email") {
+                    error.innerText = "Invalid Email";
+                    error.style.color = "red";
+                } else {
+                    const profileUl = document.querySelector("#profileUl");
+                    profileUl.innerHTML = "";
+
+                    this.displayMyProfile(myContact);
+
+                }
+            } else if (!this.checkValidEmail(newEmail)) {
+                error.innerText = "Invalid Email";
+                error.style.color = "red";
+            } else if (newName == null) {
+                document.querySelector("nameError-edit").innerText = "Enter Name";
+                document.querySelector("nameError-edit").style.color = "red";
+            }
+
+        });
+    }
+
+
+    displayMyProfile(myContact) {
+        const profileUl = document.querySelector("#profileUl");
+        let joinedDate = new Date(+(myContact.createdAt)).toLocaleString();
+
+        profileUl.innerHTML = `<li id="profiletest">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="well well-sm">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    width="150" />
+                            </div>
+                            <div class="col-sm-6 col-md-8">
+                                <h4>
+                                    ${myContact.name}</h4>
+                                <small><cite title="Chennai, India">Chennai, India <i
+                                            class="glyphicon glyphicon-map-marker">
+                                        </i></cite></small>
+                                <p>
+                                    <i class="glyphicon glyphicon-envelope"></i>Email :
+                                    ${myContact.email}
+                                    <br />
+
+                                    <i class="glyphicon glyphicon-gift"></i>Joined On - ${joinedDate},<br>
+                                    <i class="glyphicon glyphicon-gift"></i> Gender - ${myContact.gender},
+
+                                </p>
+
+
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li><br><br>
+    <button class="btn btn-primary " id="editProfileBtn" type="button">Edit profile</button>
+    `;
+
+
+        return true;
+    }
+
+    checkValidEmail(email) {
+        let emailRegex = /^([a-z 0-9\.-]+)@([a-z0-9-]+)\.([a-z]+)(.[a-z]+)?$/;
+        return emailRegex.test(email);
+    }
+
+
+    displayEdit(myContact) {
+        const profileUl = document.querySelector("#profileUl");
+        profileUl.innerHTML = `<li>
+
+        <div class="profile-pic-edit">
+            <label class="-label" for="file-change">
+                <span class="glyphicon glyphicon-camera"></span>
+                <span>Change Image</span>
+            </label>
+            <input id="file-change" type="file" onchange="loadFile(event)" />
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                id="output" width="160" />
+        </div>
+        <br><br>
+    </li>
+    <li>
+        <label class="errorLabel-display-edit" id="nameError-edit" for="name-edit">Name :
+        </label>
+        <input class="userInput" id="name-edit" type="text" value="${myContact.name}" />
+        <br><br>
+    </li>
+    <li>
+        <label class="errorLabel-display-edit" id="emailError-edit" for="email-edit">E-mail :
+        </label>
+        <input class="userInput" id="email-edit" type="email" value="${myContact.email}"/>
+        <br><br>
+    </li>    
+    <li>
+    <label class="errorLabel-display-edit" id="location-edit" for="name">Location :
+    </label>
+    <input class="userInput" id="location-edit" type="text" />
+</li>
+    <li>
+        <button class="btn btn-success " id="saveChanges" type="button">save changes</button>
+        <button class="btn btn-secondary " id="cancelEdit"  type="button">Cancel</button>
+    </li><br><br>`;
+        return true;
+    }
+
+
+
+
 }
 
 
@@ -477,41 +1176,53 @@ class Controller {
         this.model = model;
         this.view = view;
 
-        this.view.onClickCreateFeedObject(this.processAddFeed);
+        // this.view.onClickCreateFeedObject(this.processAddFeed, this.reloadDisplay, this.reloadDelete);
 
-        this.view.displayFeed(this.bindFeedDisplay, this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.model.deleteFeed);
+        this.view.onClickMyFeed(this.model.getMyFeeds, this.model.saveLike, this.model.saveComment, this.model.getCommentList, this.model.saveFeed, this.model.getMyContact, this.model.deleteFeed);
 
-        // this.view.displayUtils(this.bindFeedDisplay, this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.model.deleteFeed);
+
+        // this.view.onclickDeletePost(this.processDeleteFeed, this.bindFeedDisplay, this.reloadDisplay, this.reloadDelete);
 
         this.bindLogout(this.model.processLogout);
 
-        //    this.view.onClickToggleLike(this.model.saveLike, this.bindFeedDisplay);
+        this.view.searchPeople(this.model.getAllContacts, this.model.getUserFeed, this.model.saveLike, this.model.saveComment, this.model.getCommentList, this.model.toggleFriendList, this.model.getMyContact);
 
-        //  this.view.onClickCreateCommentObject(this.processAddcomment, this.bindFeedDisplay);
+        this.view.onClickMyFriends(this.model.getContactId, this.model.getFriendList);
 
-        // this.view.onclickDeletePost(this.model.deleteFeed, this.bindFeedDisplay)
+        this.view.onClickMyProfile(this.model.getMyContact, this.model.saveEditContact);
 
-        // this.view.onClickDisplayComments(this.model.getCommentList, this.bindFeedDisplay);
     }
 
 
 
-    bindFeedDisplay = () => {
-        return this.model.getFeeds();
-    }
+    // bindFeedDisplay = () => {
+    //     return this.model.getMyFeeds();
+    // }
 
-    processAddFeed = feed => {
-        this.model.saveFeed(feed);
-    }
+    // processAddFeed = (feed) => {
+    //     this.model.saveFeed(feed);
+    // }
 
     bindLogout = processLogout => {
         this.view.onClickLogout(processLogout);
     }
 
-    processAddcomment = comment => {
-        this.model.saveComment(comment);
-    }
+    // processAddcomment = (comment) => {
+    //     this.model.saveComment(comment);
+    // }
 
+    // processDeleteFeed = (feedId) => {
+    //     this.model.deleteFeed(feedId);
+    // }
+
+    //     reloadDisplay = async(this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.processAddFeed, this.reloadDisplay) => {
+    //     let feedList = await getMyFeeds();
+    //     this.view.displayFeed(feedList, this.model.saveLike, this.processAddcomment, this.model.getCommentList, this.processAddFeed, this.reloadDisplay);
+    // }
+
+    // reloadDelete = () => {
+    //     this.view.onclickDeletePost(this.processDeleteFeed, this.bindFeedDisplay, this.reloadDisplay);
+    // }
 
 }
 

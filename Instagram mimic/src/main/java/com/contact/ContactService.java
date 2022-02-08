@@ -5,6 +5,8 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -43,9 +45,13 @@ public class ContactService {
 			if (ofy().load().type(Credential.class).id(contact.getEmail()).now() == null) {
 				String currentMail = ofy().load().type(Contact.class).id(contact.getId()).now().getEmail();
 				String password = ofy().load().type(Credential.class).id(currentMail).now().getPassword();
-
+				Contact currentContact = ofy().load().type(Contact.class).id(contact.getId()).now();
 				ofy().delete().type(Credential.class).id(currentMail).now();
 //				ofy().delete().type(Contact.class).id(contact.getId()).now();
+				try {
+					contact.setFriendsList(currentContact.getFriendsList());
+				} catch (Exception e) {
+				}
 
 				ofy().save().entity(contact).now();
 				Credential credential = new Credential(contact.getEmail(), password, contact.getId());
@@ -55,10 +61,15 @@ public class ContactService {
 			} else if (ofy().load().type(Credential.class).id(contact.getEmail()).now().getEmail() != null && contact
 					.getId().equals(ofy().load().type(Credential.class).id(contact.getEmail()).now().getContactId())) {
 //				ofy().delete().type(Contact.class).id(contact.getId()).now();
+				Contact currentContact = ofy().load().type(Contact.class).id(contact.getId()).now();
+				try {
+					contact.setFriendsList(currentContact.getFriendsList());
+				} catch (Exception e) {
+				}
 				ofy().save().entity(contact).now();
 				return " saved changes ";
 			} else {
-				return "Existing Email ";
+				return "Existing Email";
 			}
 
 		} catch (Exception e) {
@@ -67,10 +78,14 @@ public class ContactService {
 	}
 
 	public ArrayList<Contact> getFriends(String id) {
-		List<String> idList = ofy().load().type(Contact.class).id(id).now().getFriendsList();
 		ArrayList<Contact> contactList = new ArrayList<Contact>();
-		for (String contactId : idList) {
-			contactList.add(ofy().load().type(Contact.class).id(contactId).now());
+		try {
+			List<String> idList = ofy().load().type(Contact.class).id(id).now().getFriendsList();
+
+			for (String contactId : idList) {
+				contactList.add(ofy().load().type(Contact.class).id(contactId).now());
+			}
+		} catch (Exception e) {
 		}
 		return contactList;
 	}
@@ -87,8 +102,26 @@ public class ContactService {
 		return contactList;
 	}
 
-	public void addFriend(String id) {
-		
+	public void addFriend(String id, HttpSession session) {
+		String myId = (String) session.getAttribute("contactId");
+		Contact myContact = ofy().load().type(Contact.class).id(myId).now();
+		List<String> friendList = new ArrayList<String>();
+		try {
+			List<String> currentList = myContact.getFriendsList();
+			friendList.addAll(currentList);
+		} catch (Exception e) {
+		}
+		if (friendList.contains(id)) {
+			friendList.remove(id);
+		} else {
+			friendList.add(id);
+		}
+		myContact.setFriendsList(friendList);
+		ofy().save().entity(myContact).now();
+	}
+
+	public List<Contact> getAllContacts() {
+		return ofy().load().type(Contact.class).list();
 	}
 
 }

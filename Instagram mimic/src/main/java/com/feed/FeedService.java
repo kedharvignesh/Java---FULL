@@ -42,7 +42,6 @@ public class FeedService {
 				ofy().delete().type(Comment.class).id(commentId).now();
 			}
 		} catch (Exception e) {
-			return e.getMessage();
 		}
 		ofy().delete().type(Feed.class).id(id).now();
 
@@ -73,11 +72,11 @@ public class FeedService {
 	public List<Comment> getAllComments(String id) {
 		List<Comment> feedComments = new ArrayList<Comment>();
 		try {
-		List<String> commentList = ofy().load().type(Feed.class).id(id).now().getCommentId();		
-		for (String comment : commentList) {
-			feedComments.add(ofy().load().type(Comment.class).id(comment).now());
-		}
-		}catch (Exception e) {
+			List<String> commentList = ofy().load().type(Feed.class).id(id).now().getCommentId();
+			for (String comment : commentList) {
+				feedComments.add(ofy().load().type(Comment.class).id(comment).now());
+			}
+		} catch (Exception e) {
 
 		}
 		return feedComments;
@@ -90,8 +89,8 @@ public class FeedService {
 
 		List<String> commentList = new ArrayList<String>();
 		try {
-		commentList.addAll(feed.getCommentId());
-		}catch (Exception e) {
+			commentList.addAll(feed.getCommentId());
+		} catch (Exception e) {
 		}
 		commentList.add(comment.getId());
 		feed.setCommentId(commentList);

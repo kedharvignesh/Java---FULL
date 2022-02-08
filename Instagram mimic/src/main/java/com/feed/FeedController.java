@@ -53,8 +53,8 @@ public class FeedController {
 		return feedService.getallFeed(session);
 	}
 
-	@GetMapping(path = "/{feedId}")
-	public List<Feed> getUsersFeed(@PathVariable("feedId") String id) {
+	@GetMapping(path = "/{contactId}")
+	public List<Feed> getUsersFeed(@PathVariable("contactId") String id) {
 		return feedService.getUsersFeed(id);
 	}
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.contact.Contact;
+
 @RestController
 @SessionAttributes({ "contactId" })
 public class CredentialController {
@@ -48,29 +50,34 @@ public class CredentialController {
 	@GetMapping(path = "/app")
 	public ModelAndView app(HttpSession session) {
 		try {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("app.html");
-		if (!session.getAttribute("contactId").equals(null))
-			return modelAndView;
-		else {
-			modelAndView.setViewName("index.html");
-			return modelAndView;
-		}
-		}catch (Exception e) {
+			ModelAndView modelAndView = new ModelAndView();
+			modelAndView.setViewName("app.html");
+			if (!session.getAttribute("contactId").equals(null))
+				return modelAndView;
+			else {
+				modelAndView.setViewName("index.html");
+				return modelAndView;
+			}
+		} catch (Exception e) {
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("index.html");
-			return modelAndView;	
+			return modelAndView;
 		}
 	}
-	
+
 	@GetMapping(path = "/getId")
-		public String getId(HttpSession session) {
+	public String getId(HttpSession session) {
 		return (String) session.getAttribute("contactId");
 	}
-	
+
 	@GetMapping(path = "/getName")
 	public String getName(HttpSession session) {
-	return credentialService.getName(session);
-}
+		return credentialService.getName(session);
+	}
+
+	@GetMapping(path = "/myContact")
+	public Contact getMyContact(HttpSession session) {
+		return credentialService.getMyContact(session);
+	}
 
 }
