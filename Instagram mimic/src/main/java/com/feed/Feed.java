@@ -15,20 +15,18 @@ public class Feed {
 	private String content;
 	private long createdAt;
 	private long editedAt;
-	private String creatorName;
 	private Set<String> cheersContactId;
 	private List<String> commentId;
 
 	public Feed() {
 	}
 
-	public Feed( String id , String creatorId, String content, long createdAt, long editedAt, String creatorName) {
+	public Feed( String id , String creatorId, String content, long createdAt, long editedAt) {
 		this.id = id;
 		this.creatorId = creatorId;
 		this.content = content;
 		this.createdAt = createdAt;
 		this.editedAt = editedAt;
-		this.creatorName = creatorName;
 		this.cheersContactId = new HashSet<String>();
 		this.commentId = new ArrayList<String>();
 	}
@@ -90,14 +88,6 @@ public class Feed {
 	}
 	
 	
-
-	public String getCreatorName() {
-		return creatorName;
-	}
-
-	public void setCreatorName(String creatorName) {
-		this.creatorName = creatorName;
-	}
 
 	@Override
 	public String toString() {

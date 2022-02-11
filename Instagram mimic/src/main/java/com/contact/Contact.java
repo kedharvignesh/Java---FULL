@@ -16,11 +16,12 @@ public class Contact {
 	private long editedAt;
 	private List<String> friendsList;
 	private String gender;
+	private String location;
 
 	public Contact() {
 	}
 
-	public Contact(String id, String name, String email, long createdAt, long editedAt, String gender) {
+	public Contact(String id, String name, String email, long createdAt, long editedAt, String gender,String location) {
 
 		this.id = id;
 		this.name = name;
@@ -29,6 +30,7 @@ public class Contact {
 		this.editedAt = editedAt;
 		this.friendsList = new ArrayList<String>();
 		this.gender=gender;
+		this.location=location;
 	}
 
 	public String getId() {
@@ -86,6 +88,16 @@ public class Contact {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	
+	
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	@Override

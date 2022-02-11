@@ -47,12 +47,10 @@ public class ContactService {
 				String password = ofy().load().type(Credential.class).id(currentMail).now().getPassword();
 				Contact currentContact = ofy().load().type(Contact.class).id(contact.getId()).now();
 				ofy().delete().type(Credential.class).id(currentMail).now();
-//				ofy().delete().type(Contact.class).id(contact.getId()).now();
 				try {
 					contact.setFriendsList(currentContact.getFriendsList());
 				} catch (Exception e) {
 				}
-
 				ofy().save().entity(contact).now();
 				Credential credential = new Credential(contact.getEmail(), password, contact.getId());
 				ofy().save().entity(credential).now();
@@ -60,7 +58,6 @@ public class ContactService {
 				return "changes in email stored";
 			} else if (ofy().load().type(Credential.class).id(contact.getEmail()).now().getEmail() != null && contact
 					.getId().equals(ofy().load().type(Credential.class).id(contact.getEmail()).now().getContactId())) {
-//				ofy().delete().type(Contact.class).id(contact.getId()).now();
 				Contact currentContact = ofy().load().type(Contact.class).id(contact.getId()).now();
 				try {
 					contact.setFriendsList(currentContact.getFriendsList());

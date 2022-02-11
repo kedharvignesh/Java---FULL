@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +16,9 @@ import com.contact.Contact;
 @Service
 public class FeedService {
 
+	 private static final Logger logger = Logger.getLogger(FeedService.class.getName());
+	
+	
 	public List<Feed> getMyFeeds(HttpSession session) {
 		String contactId = (String) session.getAttribute("contactId");
 //		String contactId = "zzzzzzzzzfllvm";
@@ -51,17 +55,26 @@ public class FeedService {
 
 	public List<Feed> getallFeed(HttpSession session) {
 		String contactId = (String) session.getAttribute("contactId");
-		List<String> friendList;
+		List<String> friendList = new ArrayList<String>();
 		try {
-			friendList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
+				friendList = ofy().load().type(Contact.class).id(contactId).now().getFriendsList();
+				logger.severe(friendList.toString());
 		} catch (Exception e) {
-			friendList = new ArrayList<String>();
 		}
-		List<Feed> feedList = ofy().load().type(Feed.class).filter("creatorId", contactId).list();
-
-		for (String friendId : friendList) {
-			feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", friendId).list());
+		List<Feed> feedList = new ArrayList<Feed>();
+		try {
+			feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", contactId).list());
+			logger.severe(feedList.toString());
+		} catch (Exception e) {
 		}
+		try {
+			for (String friendId : friendList) {
+				feedList.addAll(ofy().load().type(Feed.class).filter("creatorId", friendId).list());
+			}
+			logger.severe(feedList.toString());
+		} catch (Exception e) {
+		}
+		logger.severe(feedList.toString());
 		return feedList;
 	}
 

@@ -343,3 +343,6 @@ span.last_seen{
 	top: 50%;
 } */
 
+#loading-image{
+    display: none;
+}
