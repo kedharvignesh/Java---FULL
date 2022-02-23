@@ -5,7 +5,6 @@ import Message from './components/Message';
 import faker from "@faker-js/faker"
 
 const generateSampleMessages = async () => {
-  await new Promise((res) => setTimeout(res, 2500));
   let messages = [];
   for (let i = 0; i < 10; i++) {
     const message = {
@@ -24,8 +23,10 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [spinnerDisplay, setSpinnerDisplay] = useState();
   let canEnter = useRef(true);
+
   let chatBoxRef = useRef();
-  let spinner = useRef();
+
+
 
   const showSpinner = () => {
     spinner.current.style.display = "block";
@@ -47,7 +48,7 @@ function App() {
 
 
   const storeMessage = (message) => {
-    setMessages((oldMessages) => [...oldMessages, message]);
+    setMessages([...messages, message]);
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   }
 
@@ -59,13 +60,13 @@ function App() {
         canEnter.current = false;
         setSpinnerDisplay(showSpinner);
 
+        canEnter.current = false;
         let scrlHeight = element.scrollHeight;
-
         generateSampleMessages().then((newMessages) => {
-
           canEnter.current = true;
-          setMessages((oldMessages) => [...newMessages, ...oldMessages])
-          let currentScrollTop = element.scrollTop;
+          newMessages.concat(messages)
+          setMessages([...newMessages, ...messages])
+
           let newScrollHeight = element.scrollHeight;
           element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
           setSpinnerDisplay(hideSpinner)
@@ -91,9 +92,6 @@ function App() {
               <div className="box box-warning direct-chat direct-chat-warning">
                 <div className="box-header with-border">
                   <h3 className="box-title">Chat Messages</h3>
-                  <div class="spinner-border text-info" ref={spinner} role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
                 </div>
                 <div className="box-body" ref={chatBoxRef} onScroll={handleOnScroll}>
                   {messages.length > 0 ? (messages.map((message, index) => (
