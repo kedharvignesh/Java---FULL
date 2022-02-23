@@ -21,25 +21,23 @@ const generateSampleMessages = async () => {
 
 function App() {
   const [messages, setMessages] = useState([]);
-  let canEnter = useRef();
-  canEnter.current = true;
-
+  let canEnter = useRef(true);
   let chatBoxRef = useRef();
 
 
   useEffect(() => {
+    // canEnter.current = true;
     generateSampleMessages().then((newMessages) => {
-      newMessages.concat(messages)
-      setMessages([...newMessages]);
+      setMessages((oldMessages) => [...newMessages, ...oldMessages]);
 
-    })
+    }).catch((e) => console.error(e))
 
   }, [])
 
 
 
   const storeMessage = (message) => {
-    setMessages([...messages, message]);
+    setMessages((oldMessages) => [...oldMessages, message]);
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   }
 
@@ -48,17 +46,19 @@ function App() {
 
       let element = e.target;
       if (element.scrollTop === 0) {
-
         canEnter.current = false;
         let scrlHeight = element.scrollHeight;
         generateSampleMessages().then((newMessages) => {
-          canEnter.current = true;
-          newMessages.concat(messages)
-          setMessages([...newMessages, ...messages])
 
-          let newScrollHeight = element.scrollHeight;
-          element.scrollTop = newScrollHeight - scrlHeight;
-        });
+          setTimeout(() => {
+            canEnter.current = true;
+            setMessages((oldMessages) => [...newMessages, ...oldMessages])
+            let currentScrollTop = element.scrollTop;
+            let newScrollHeight = element.scrollHeight;
+            element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
+          }, 2500);
+
+        }).catch((e) => console.error(e))
       }
     }
   }
