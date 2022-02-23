@@ -21,18 +21,27 @@ const generateSampleMessages = async () => {
 
 function App() {
   const [messages, setMessages] = useState([]);
-  let canEnter = useRef();
-  canEnter.current = true;
+  const [spinnerDisplay, setSpinnerDisplay] = useState();
+  let canEnter = useRef(true);
 
   let chatBoxRef = useRef();
 
 
-  useEffect(() => {
-    generateSampleMessages().then((newMessages) => {
-      newMessages.concat(messages)
-      setMessages([...newMessages]);
 
-    })
+  const showSpinner = () => {
+    spinner.current.style.display = "block";
+  }
+
+  const hideSpinner = () => {
+    spinner.current.style.display = "none";
+  }
+
+  useEffect(() => {
+    setSpinnerDisplay(showSpinner);
+    generateSampleMessages().then((newMessages) => {
+      setMessages((oldMessages) => [...newMessages, ...oldMessages]);
+      setSpinnerDisplay(hideSpinner)
+    }).catch((e) => console.error(e))
 
   }, [])
 
@@ -48,6 +57,8 @@ function App() {
 
       let element = e.target;
       if (element.scrollTop === 0) {
+        canEnter.current = false;
+        setSpinnerDisplay(showSpinner);
 
         canEnter.current = false;
         let scrlHeight = element.scrollHeight;
@@ -57,8 +68,10 @@ function App() {
           setMessages([...newMessages, ...messages])
 
           let newScrollHeight = element.scrollHeight;
-          element.scrollTop = newScrollHeight - scrlHeight;
-        });
+          element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
+          setSpinnerDisplay(hideSpinner)
+
+        }).catch((e) => console.error(e))
       }
     }
   }
