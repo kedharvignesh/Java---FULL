@@ -22,16 +22,24 @@ const generateSampleMessages = async () => {
 
 function App() {
   const [messages, setMessages] = useState([]);
+  const [spinnerDisplay, setSpinnerDisplay] = useState();
   let canEnter = useRef(true);
   let chatBoxRef = useRef();
   let spinner = useRef();
 
-  useEffect(() => {
-    // canEnter.current = true;
+  const showSpinner = () => {
     spinner.current.style.display = "block";
+  }
+
+  const hideSpinner = () => {
+    spinner.current.style.display = "none";
+  }
+
+  useEffect(() => {
+    setSpinnerDisplay(showSpinner);
     generateSampleMessages().then((newMessages) => {
       setMessages((oldMessages) => [...newMessages, ...oldMessages]);
-      spinner.current.style.display = "none";
+      setSpinnerDisplay(hideSpinner)
     }).catch((e) => console.error(e))
 
   }, [])
@@ -49,7 +57,7 @@ function App() {
       let element = e.target;
       if (element.scrollTop === 0) {
         canEnter.current = false;
-        spinner.current.style.display = "block";
+        setSpinnerDisplay(showSpinner);
 
         let scrlHeight = element.scrollHeight;
 
@@ -60,7 +68,8 @@ function App() {
           let currentScrollTop = element.scrollTop;
           let newScrollHeight = element.scrollHeight;
           element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
-          spinner.current.style.display = "none";
+          setSpinnerDisplay(hideSpinner)
+
         }).catch((e) => console.error(e))
       }
     }
