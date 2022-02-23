@@ -14,24 +14,23 @@ const generateSampleMessages = async () => {
       id: faker.datatype.uuid(),
       avatar: `${faker.image.nature()}?random=${Date.now()}`
     }
-    messages.unshift(message);
+    messages.push(message);
   }
   return messages;
 }
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [enter, setEnter] = useState(true);
+  let canEnter = useRef();
+  canEnter.current = true;
 
   let chatBoxRef = useRef();
 
 
   useEffect(() => {
-    generateSampleMessages().then((randomMessages) => {
-      randomMessages.forEach(msg => {
-        messages.unshift(msg);
-      })
-      setMessages([...messages])
+    generateSampleMessages().then((newMessages) => {
+      newMessages.concat(messages)
+      setMessages([...newMessages]);
 
     })
 
@@ -40,32 +39,30 @@ function App() {
 
 
   const storeMessage = (message) => {
-    messages.push(message);
-    setMessages([...messages]);
+    setMessages([...messages, message]);
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   }
 
-  const handleOnScroll = async (e, canEnter) => {
-    if (canEnter) {
+  const handleOnScroll = (e) => {
+    if (canEnter.current) {
 
       let element = e.target;
       if (element.scrollTop === 0) {
-        setEnter(false);
 
+        canEnter.current = false;
         let scrlHeight = element.scrollHeight;
-        let res = await generateSampleMessages();
-        if (res) {
-          setEnter(true);
-          res.forEach(msg => {
-            messages.unshift(msg);
-          })
-          setMessages([...messages]);
+        generateSampleMessages().then((newMessages) => {
+          canEnter.current = true;
+          newMessages.concat(messages)
+          setMessages([...newMessages, ...messages])
+
           let newScrollHeight = element.scrollHeight;
           element.scrollTop = newScrollHeight - scrlHeight;
-        }
+        });
       }
     }
   }
+
 
   const deleteMessage = (id) => {
     setMessages(messages.filter((msg) =>
@@ -83,7 +80,7 @@ function App() {
                 <div className="box-header with-border">
                   <h3 className="box-title">Chat Messages</h3>
                 </div>
-                <div className="box-body" ref={chatBoxRef} onScroll={(e) => handleOnScroll(e, enter)}>
+                <div className="box-body" ref={chatBoxRef} onScroll={handleOnScroll}>
                   {messages.length > 0 ? (messages.map((message, index) => (
                     <Message key={index} message={message} onDelete={deleteMessage} index={index} />
                   ))) : ("no messages")}
