@@ -5,7 +5,6 @@ import Message from './components/Message';
 import faker from "@faker-js/faker"
 
 const generateSampleMessages = async () => {
-  await new Promise((res) => setTimeout(res, 2500));
   let messages = [];
   for (let i = 0; i < 10; i++) {
     const message = {
@@ -22,24 +21,25 @@ const generateSampleMessages = async () => {
 
 function App() {
   const [messages, setMessages] = useState([]);
-  let canEnter = useRef(true);
+  let canEnter = useRef();
+  canEnter.current = true;
+
   let chatBoxRef = useRef();
-  let spinner = useRef();
+
 
   useEffect(() => {
-    // canEnter.current = true;
-    spinner.current.style.display = "block";
     generateSampleMessages().then((newMessages) => {
-      setMessages((oldMessages) => [...newMessages, ...oldMessages]);
-      spinner.current.style.display = "none";
-    }).catch((e) => console.error(e))
+      newMessages.concat(messages)
+      setMessages([...newMessages]);
+
+    })
 
   }, [])
 
 
 
   const storeMessage = (message) => {
-    setMessages((oldMessages) => [...oldMessages, message]);
+    setMessages([...messages, message]);
     chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
   }
 
@@ -48,20 +48,17 @@ function App() {
 
       let element = e.target;
       if (element.scrollTop === 0) {
+
         canEnter.current = false;
-        spinner.current.style.display = "block";
-
         let scrlHeight = element.scrollHeight;
-
         generateSampleMessages().then((newMessages) => {
-
           canEnter.current = true;
-          setMessages((oldMessages) => [...newMessages, ...oldMessages])
-          let currentScrollTop = element.scrollTop;
+          newMessages.concat(messages)
+          setMessages([...newMessages, ...messages])
+
           let newScrollHeight = element.scrollHeight;
-          element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
-          spinner.current.style.display = "none";
-        }).catch((e) => console.error(e))
+          element.scrollTop = newScrollHeight - scrlHeight;
+        });
       }
     }
   }
@@ -82,9 +79,6 @@ function App() {
               <div className="box box-warning direct-chat direct-chat-warning">
                 <div className="box-header with-border">
                   <h3 className="box-title">Chat Messages</h3>
-                  <div class="spinner-border text-info" ref={spinner} role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
                 </div>
                 <div className="box-body" ref={chatBoxRef} onScroll={handleOnScroll}>
                   {messages.length > 0 ? (messages.map((message, index) => (

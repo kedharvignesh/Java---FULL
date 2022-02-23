@@ -18,7 +18,7 @@ const AddMessage = ({ onSend }) => {
         setText('')
     }
     return (
-        <form onSubmit={onClick} >
+        <form  >
             <div className="input-group"> <input type="text"
                 placeholder="Type Message ..." className="form-control" value={text}
                 onChange={(e) => setText(e.target.value)} /> <span
