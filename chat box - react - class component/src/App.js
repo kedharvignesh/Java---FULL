@@ -26,12 +26,12 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = { messages: [], spinnerDisplay: false }
-    this.canEnter = React.createRef();
+    this.canEnter = true;
+    console.log(this.canEnter)
     this.chatBoxRef = React.createRef();
   }
 
   componentDidMount() {
-    this.canEnter.current = true;
     this.setState({ spinnerDisplay: true });
     generateSampleMessages().then((newMessages) => {
       this.setState({ messages: [...newMessages, ...this.state.messages], spinnerDisplay: false });
@@ -40,45 +40,47 @@ class App extends React.Component {
 
   }
 
-  render() {
-    const storeMessage = (message) => {
-      console.log(message);
-      this.setState({ messages: [...this.state.messages, message] });
-      this.chatBoxRef.current.scrollTop = this.chatBoxRef.current.scrollHeight;
-    }
+  storeMessage = (message) => {
+    console.log(message);
+    this.setState({ messages: [...this.state.messages, message] });
+    this.chatBoxRef.current.scrollTop = this.chatBoxRef.current.scrollHeight;
+  }
 
-    const handleOnScroll = (e) => {
-      if (this.canEnter.current) {
+  handleOnScroll = (e) => {
+    if (this.canEnter) {
 
-        let element = e.target;
-        if (element.scrollTop === 0) {
-          this.canEnter.current = false;
-          this.setState({ spinnerDisplay: true });
+      let element = e.target;
+      if (element.scrollTop === 0) {
+        this.canEnter = false;
+        this.setState({ spinnerDisplay: true });
 
-          let scrlHeight = element.scrollHeight;
+        let scrlHeight = element.scrollHeight;
 
-          generateSampleMessages().then((newMessages) => {
+        generateSampleMessages().then((newMessages) => {
 
-            this.canEnter.current = true;
-            this.setState({ messages: [...newMessages, ...this.state.messages], spinnerDisplay: false });
-            let currentScrollTop = element.scrollTop;
-            let newScrollHeight = element.scrollHeight;
-            element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
+          this.canEnter = true;
+          this.setState({ messages: [...newMessages, ...this.state.messages], spinnerDisplay: false });
+          let currentScrollTop = element.scrollTop;
+          let newScrollHeight = element.scrollHeight;
+          element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
 
-          }).catch((e) => console.error(e))
-        }
+        }).catch((e) => console.error(e))
       }
     }
+  }
 
 
-    const deleteMessage = (id) => {
-      this.setState({
-        messages: (this.state.messages.filter((msg) =>
-          msg.id !== id
-        )),
-      });
+  deleteMessage = (id) => {
+    this.setState({
+      messages: (this.state.messages.filter((msg) =>
+        msg.id !== id
+      )),
+    });
 
-    }
+  }
+
+  render() {
+
 
     return (
       <div className="App" >
@@ -93,13 +95,13 @@ class App extends React.Component {
                       <span className="sr-only">Loading...</span>
                     </div>}
                   </div>
-                  <div className="box-body" ref={this.chatBoxRef} onScroll={handleOnScroll}>
+                  <div className="box-body" ref={this.chatBoxRef} onScroll={this.handleOnScroll}>
                     {this.state.messages.length > 0 ? (this.state.messages.map((message, index) => (
-                      <Message key={index} message={message} onDelete={deleteMessage} index={index} />
+                      <Message key={index} message={message} onDelete={this.deleteMessage} index={index} />
                     ))) : ("no messages")}
                   </div>
                   <div className="box-footer">
-                    <MessageInput onSend={storeMessage} />
+                    <MessageInput onSend={this.storeMessage} />
                   </div>
                 </div>
               </div>
