@@ -26,8 +26,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = { messages: [], spinnerDisplay: false }
-    this.canEnter = true;
-    console.log(this.canEnter)
+    this.isLoading = true;
     this.chatBoxRef = React.createRef();
   }
 
@@ -47,18 +46,18 @@ class App extends React.Component {
   }
 
   handleOnScroll = (e) => {
-    if (this.canEnter) {
+    if (this.isLoading) {
 
       let element = e.target;
       if (element.scrollTop === 0) {
-        this.canEnter = false;
+        this.isLoading = false;
         this.setState({ spinnerDisplay: true });
 
         let scrlHeight = element.scrollHeight;
 
         generateSampleMessages().then((newMessages) => {
 
-          this.canEnter = true;
+          this.isLoading = true;
           this.setState({ messages: [...newMessages, ...this.state.messages], spinnerDisplay: false });
           let currentScrollTop = element.scrollTop;
           let newScrollHeight = element.scrollHeight;
