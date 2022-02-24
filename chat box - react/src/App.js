@@ -22,24 +22,16 @@ const generateSampleMessages = async () => {
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [spinnerDisplay, setSpinnerDisplay] = useState();
+  const [spinnerDisplay, setSpinnerDisplay] = useState(false);
   let canEnter = useRef(true);
   let chatBoxRef = useRef();
-  let spinner = useRef();
 
-  const showSpinner = () => {
-    spinner.current.style.display = "block";
-  }
-
-  const hideSpinner = () => {
-    spinner.current.style.display = "none";
-  }
 
   useEffect(() => {
-    setSpinnerDisplay(showSpinner);
+    setSpinnerDisplay(true);
     generateSampleMessages().then((newMessages) => {
       setMessages((oldMessages) => [...newMessages, ...oldMessages]);
-      setSpinnerDisplay(hideSpinner)
+      setSpinnerDisplay(false)
     }).catch((e) => console.error(e))
 
   }, [])
@@ -57,7 +49,7 @@ function App() {
       let element = e.target;
       if (element.scrollTop === 0) {
         canEnter.current = false;
-        setSpinnerDisplay(showSpinner);
+        setSpinnerDisplay(true);
 
         let scrlHeight = element.scrollHeight;
 
@@ -68,7 +60,7 @@ function App() {
           let currentScrollTop = element.scrollTop;
           let newScrollHeight = element.scrollHeight;
           element.scrollTop = (currentScrollTop) + (newScrollHeight - scrlHeight);
-          setSpinnerDisplay(hideSpinner)
+          setSpinnerDisplay(false)
 
         }).catch((e) => console.error(e))
       }
@@ -91,9 +83,9 @@ function App() {
               <div className="box box-warning direct-chat direct-chat-warning">
                 <div className="box-header with-border">
                   <h3 className="box-title">Chat Messages</h3>
-                  <div class="spinner-border text-info" ref={spinner} role="status">
+                  {spinnerDisplay && <div class="spinner-border text-info" role="status">
                     <span class="sr-only">Loading...</span>
-                  </div>
+                  </div>}
                 </div>
                 <div className="box-body" ref={chatBoxRef} onScroll={handleOnScroll}>
                   {messages.length > 0 ? (messages.map((message, index) => (
