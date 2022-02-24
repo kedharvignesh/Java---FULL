@@ -361,3 +361,8 @@ body {
 position: relative;
 left: 90%;
 }
+
+.spinner-border{
+  position: relative;
+  left :40%;
+}

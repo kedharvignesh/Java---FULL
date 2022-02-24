@@ -1,7 +1,7 @@
 import { useState } from "react"
 import faker from "@faker-js/faker"
 
-const AddMessage = ({ onSend }) => {
+const Messageinput = ({ onSend }) => {
     const [text, setText] = useState('')
     const name = "Kedhar";
     const time = "" + faker.date.past();
@@ -29,4 +29,4 @@ const AddMessage = ({ onSend }) => {
 }
 
 
-export default AddMessage
+export default Messageinput
